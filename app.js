@@ -18,7 +18,17 @@ function updateDate() {
 }
 
 let oldPrices = {};
+let oldTickerPrices = {};
+let tickerData = {};
+function formatTickerNumber(value) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return "";
 
+  return new Intl.NumberFormat("tr-TR", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 3
+  }).format(number);
+}
 const madenOrder = [
   "HAS ALTIN", "HAS ALTIN ÇEKİLİ", "ALTIN ONS", "USD KG",
   "ALTIN USDKG", "EUR KG", "ALTIN EURKG", "GÜMÜŞ ONS",
@@ -36,6 +46,16 @@ const sarrafiyeOrder = [
 const dovizOrder = [
   "USDTRY", "EURTRY", "EURUSD", "GBPTRY", "CHFTRY",
   "AUDTRY", "CADTRY", "SARTRY", "JPYTRY"
+];
+
+const tickerOrder = [
+  "ONS",
+  "USD/KG",
+  "EUR/KG",
+  "GÜMÜŞ ONS",
+  "HAS ALTIN",
+  "USDTRY",
+  "EURTRY"
 ];
 
 function cleanName(name) {
@@ -110,6 +130,8 @@ function createGoldRow(item) {
     sell: sellNumber
   };
 
+  tickerData[item.key] = sellNumber;
+
   return `
     <tr>
       <td>${item.key}</td>
@@ -117,6 +139,41 @@ function createGoldRow(item) {
       <td class="${sellClass}">${sell}</td>
     </tr>
   `;
+}
+
+function updateTicker() {
+  const tickerTrack = document.getElementById("tickerTrack");
+  if (!tickerTrack) return;
+
+  const items = [];
+
+  tickerOrder.forEach(name => {
+    const price = tickerData[name];
+    if (!Number.isFinite(price)) return;
+
+    const old = oldTickerPrices[name];
+    let percent = 0;
+
+    if (Number.isFinite(old) && old !== 0) {
+      percent = ((price - old) / old) * 100;
+    }
+
+    const isUp = percent >= 0;
+    const arrow = isUp ? "↑" : "↓";
+    const cls = isUp ? "ticker-up" : "ticker-down";
+
+    items.push(`
+      <div class="ticker-item">
+        <strong>${name}</strong>
+        <span class="ticker-price">${formatTickerNumber(price)}</span>
+        <span class="${cls}">${arrow} %${Math.abs(percent).toFixed(2)}</span>
+      </div>
+    `);
+
+    oldTickerPrices[name] = price;
+  });
+
+  tickerTrack.innerHTML = items.join("") + items.join("");
 }
 
 async function loadGold() {
@@ -155,6 +212,8 @@ async function loadGold() {
 
     madenBody.innerHTML = madenItems.map(createGoldRow).join("");
     sarrafiyeBody.innerHTML = sarrafiyeItems.map(createGoldRow).join("");
+
+    updateTicker();
 
   } catch (err) {
     console.log("Gold Error:", err);
@@ -201,6 +260,10 @@ async function loadDoviz() {
       return;
     }
 
+    rows.forEach(item => {
+      tickerData[item.code] = Number(item.sell);
+    });
+
     dovizBody.innerHTML = rows.map(item => `
       <tr>
         <td>${item.code}</td>
@@ -208,6 +271,8 @@ async function loadDoviz() {
         <td>${formatNumber(item.sell)}</td>
       </tr>
     `).join("");
+
+    updateTicker();
 
   } catch (err) {
     console.log("Döviz Error:", err);
@@ -230,4 +295,5 @@ setInterval(loadGold, 60000);
 
 loadDoviz();
 setInterval(loadDoviz, 60000);
- 
+loadDoviz();
+setInterval(loadDoviz, 60000);

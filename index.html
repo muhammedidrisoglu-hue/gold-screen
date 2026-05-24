@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="ar">
 
 <head>
   <meta charset="UTF-8">
@@ -8,55 +8,53 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+<div class="nav-header">
 
-  <div class="nav-header">
-    
-    <img src="logo.png" class="nav-logo">
+  <img src="logo.png" class="nav-logo">
 
-    <div class="menu-btn" onclick="toggleMenu()">☰</div>
-
-    <div class="nav-links" id="mobileMenu">
-      <a href="/" class="active">Ana Sayfa</a>
-      <a href="/iletisim.html">İletişim</a>
-    </div>
+  <div class="nav-links">
+<a href="/" class="active">Ana Sayfa</a>
+<a href="/iletisim.html">İletişim</a>
   </div>
 
-  <div class="sections">
+</div>
 
-    <div class="price-section">
-      <h2>Maden</h2>
-      <table>
-        <thead>
-          <tr><th></th><th>Alış</th><th>Satış</th></tr>
-        </thead>
-        <tbody id="madenBody"></tbody>
-      </table>
-    </div>
+</div>
 
-    <div class="price-section">
-      <h2>Döviz</h2>
-      <table>
-        <thead>
-          <tr><th></th><th>Alış</th><th>Satış</th></tr>
-        </thead>
-        <tbody id="dovizBody"></tbody>
-      </table>
-    </div>
+<div class="sections">
 
-    <div class="price-section">
-      <h2>Sarrafiye</h2>
-      <table>
-        <thead>
-          <tr><th></th><th>Alış</th><th>Satış</th></tr>
-        </thead>
-        <tbody id="sarrafiyeBody"></tbody>
-      </table>
-    </div>
-
+  <div class="price-section">
+    <h2>Maden</h2>
+    <table>
+      <thead>
+<tr><th></th><th>Alıș</th><th>Satış</th></tr>      </thead>
+      <tbody id="madenBody"></tbody>
+    </table>
   </div>
+ <div class="price-section">
+    <h2>Döviz</h2>
+    <table>
+      <thead>
+        <tr><th></th><th>Alıș</th><th>Satış</th></tr>
+      </thead>
+      <tbody id="dovizBody"></tbody>
+    </table>
+  </div>
+  <div class="price-section">
+    <h2>Sarrafiye</h2>
+    <table>
+      <thead>
+        <tr><th></th><th>Alıș</th><th>Satıș</th></tr>
+      </thead>
+      <tbody id="sarrafiyeBody"></tbody>
+    </table>
+  </div>
+</div>
+<div class="ticker-bar">
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+<script src="app.js"></script>
 
-  <script src="app.js"></script>
 </body>
 </html>
