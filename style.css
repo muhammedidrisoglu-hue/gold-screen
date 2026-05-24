@@ -168,3 +168,19 @@ td:last-child{
     font-size:22px;
   }
 }
+@media screen and (max-width: 768px) {
+  .sections {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: none !important;
+    width: 100% !important;
+  }
+
+  .price-section {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    margin-bottom: 22px !important;
+  }
+}
