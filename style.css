@@ -69,8 +69,8 @@ body{
 .price-section{
   background:#fff;
   border-radius:14px;
-  padding:14px;
-  height:78vh;
+  padding:25px;
+  height:80vh;
   overflow-y:auto;
   box-shadow:0 4px 18px rgba(0,0,0,.05);
 }
@@ -85,11 +85,13 @@ body{
 }
 
 .price-section h2{
-  margin:0 0 10px;
+  margin:0;
   color:#c8a33d;
-  font-size:16px;
+  font-size:20px;
   font-weight:800;
-  text-transform:uppercase;
+  height:42px;
+  display:flex;
+  align-items:center;
 }
 
 /* TABLE */
@@ -102,15 +104,16 @@ table{
 
 th{
   color:#c8a33d;
-  font-size:16px;
+  font-size:20px;
   font-weight:800;
-  padding-bottom:8px;
+  height:42px;
+  padding:0;
 }
 
 td{
   background:#f3f3f3;
-  padding:12px 8px;
-  font-size:17px;
+  padding:20px 14px;
+  font-size:22px;
   font-weight:800;
   text-align:center;
 }
