@@ -175,40 +175,57 @@ tbody tr td:last-child{
   border-radius:0 16px 16px 0;
 }
 
+/* ===== NAVBAR ===== */
+
 .nav-header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  background:white;
+  background:#ffffff;
+  padding:14px 30px;
   border-radius:20px;
-  padding:18px 35px;
-  margin-bottom:25px;
-  box-shadow:0 8px 25px rgba(0,0,0,0.08);
+  margin-bottom:20px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.06);
 }
 
+/* اللوغو */
 .nav-logo{
-  width:190px;
+  width:450px;
   height:auto;
 }
 
+/* الروابط */
 .nav-links{
   display:flex;
+  align-items:center;
   gap:18px;
 }
 
+/* شكل الزر */
 .nav-links a{
   text-decoration:none;
   color:#222;
-  font-size:22px;
-  font-weight:bold;
-  padding:12px 24px;
-  border-radius:18px;
+  font-size:18px;
+  font-weight:600;
+  padding:12px 28px;
+  border-radius:999px;
+  background:#f4f4f4;
+  transition:0.3s;
 }
 
+/* hover */
 .nav-links a:hover{
   background:#d4af37;
   color:white;
 }
+
+/* الصفحة الحالية */
+.nav-links a.active{
+  background:#d4af37;
+  color:white;
+  box-shadow:0 4px 12px rgba(212,175,55,0.4);
+}
+
 
 .contact-page{
   max-width:900px;
