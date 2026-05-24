@@ -1,0 +1,176 @@
+body{
+  margin:0;
+  padding:20px;
+  background:#f4f4f4;
+  color:#222;
+  font-family:Arial, sans-serif;
+  overflow:auto;
+}
+
+.top-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:white;
+  border-radius:20px;
+  padding:20px 35px;
+  margin-bottom:25px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.08);
+}
+
+.logo{
+  width:210px;
+  height:auto;
+}
+
+.shop-info{
+  text-align:center;
+  flex:1;
+}
+
+.shop-info h1{
+  margin:0;
+  font-size:55px;
+  color:#222;
+}
+
+.shop-info p{
+  margin:4px 0;
+  font-size:22px;
+  color:#444;
+}
+
+.shop-info p:last-child{
+  direction:ltr;
+  unicode-bidi:embed;
+}
+
+.time-box{
+  width:220px;
+  text-align:center;
+}
+
+#clock{
+  font-size:48px;
+  margin:0;
+  color:#222;
+}
+
+#date{
+  font-size:32px;
+  font-weight:bold;
+  color:#222;
+  margin:8px 0 0;
+}
+
+table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0 14px;
+}
+
+thead th{
+  color:#c9a646;
+  font-size:34px;
+  padding:15px;
+  text-align:center;
+}
+
+tbody tr{
+  background:#f1f1f1;
+  border-radius:22px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.04);
+}
+
+td{
+  padding:24px 18px;
+  text-align:center;
+  font-size:38px;
+  color:#222;
+  font-weight:800;
+  border:none;
+}
+
+td:first-child{
+  text-align:left;
+  padding-left:35px;
+  font-size:40px;
+  font-weight:900;
+}
+
+tbody tr td:first-child{
+  border-radius:22px 0 0 22px;
+}
+
+tbody tr td:last-child{
+  border-radius:0 22px 22px 0;
+}
+
+.up{
+  color:green !important;
+  animation:pulseGreen 0.5s;
+}
+
+.down{
+  color:red !important;
+  animation:pulseRed 0.5s;
+}
+
+@keyframes pulseGreen{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.12);}
+  100%{transform:scale(1);}
+}
+
+@keyframes pulseRed{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.12);}
+  100%{transform:scale(1);}
+}
+.sections{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:20px;
+}
+
+.price-section{
+  background:white;
+  border-radius:22px;
+  padding:20px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.08);
+}
+
+.price-section h2{
+  color:#c9a646;
+  font-size:32px;
+  margin:0 0 15px;
+}
+
+.price-section table{
+  width:100%;
+  border-spacing:0 10px;
+}
+
+.price-section th{
+  color:#c9a646;
+  font-size:24px;
+  padding:10px;
+}
+
+.price-section td{
+  background:#f3f3f3;
+  font-size:24px;
+  padding:18px 10px;
+  border:none;
+}
+
+.price-section td:first-child{
+  text-align:left;
+  font-size:24px;
+  font-weight:900;
+  border-radius:16px 0 0 16px;
+}
+
+.price-section td:last-child{
+  border-radius:0 16px 16px 0;
+}
