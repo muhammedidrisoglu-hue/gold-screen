@@ -20,15 +20,7 @@ function updateDate() {
 let oldPrices = {};
 let oldTickerPrices = {};
 let tickerData = {};
-function formatTickerNumber(value) {
-  const number = Number(value);
-  if (!Number.isFinite(number)) return "";
 
-  return new Intl.NumberFormat("tr-TR", {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 3
-  }).format(number);
-}
 const madenOrder = [
   "HAS ALTIN", "HAS ALTIN ÇEKİLİ", "ALTIN ONS", "USD KG",
   "ALTIN USDKG", "EUR KG", "ALTIN EURKG", "GÜMÜŞ ONS",
@@ -50,8 +42,8 @@ const dovizOrder = [
 
 const tickerOrder = [
   "ONS",
-  "USD/KG",
-  "EUR/KG",
+  "USD KG",
+  "EUR KG",
   "GÜMÜŞ ONS",
   "HAS ALTIN",
   "USDTRY",
@@ -107,12 +99,41 @@ function formatNumber(value) {
   return number.toFixed(3);
 }
 
+function formatTickerNumber(value) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return "";
+
+  return new Intl.NumberFormat("tr-TR", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 3
+  }).format(number);
+}
+
+function getPercent(key, newValue) {
+  const old = oldPrices[key]?.sell;
+  if (!Number.isFinite(old) || old === 0) return 0;
+  return ((newValue - old) / old) * 100;
+}
+
+function createNameCell(name, percent) {
+  const isUp = percent >= 0;
+  const cls = isUp ? "up" : "down";
+  const arrow = isUp ? "↑" : "↓";
+
+  return `
+    <span class="price-name">${name}</span>
+    <span class="price-desc">Canlı fiyat</span>
+    <span class="price-rate ${cls}">${arrow} %${Math.abs(percent).toFixed(2)}</span>
+  `;
+}
+
 function createGoldRow(item) {
   const buy = item.buy;
   const sell = item.sell;
 
   const buyNumber = parsePrice(buy);
   const sellNumber = parsePrice(sell);
+  const percent = getPercent(item.key, sellNumber);
 
   let buyClass = "";
   let sellClass = "";
@@ -134,7 +155,7 @@ function createGoldRow(item) {
 
   return `
     <tr>
-      <td>${item.key}</td>
+      <td>${createNameCell(item.key, percent)}</td>
       <td class="${buyClass}">${buy}</td>
       <td class="${sellClass}">${sell}</td>
     </tr>
@@ -148,10 +169,19 @@ function updateTicker() {
   const items = [];
 
   tickerOrder.forEach(name => {
-    const price = tickerData[name];
+    const cleanTarget = cleanName(name);
+
+    const realKey = Object.keys(tickerData).find(key => {
+      const cleanKey = cleanName(key);
+      return cleanKey === cleanTarget || cleanKey.includes(cleanTarget) || cleanTarget.includes(cleanKey);
+    });
+
+    if (!realKey) return;
+
+    const price = tickerData[realKey];
     if (!Number.isFinite(price)) return;
 
-    const old = oldTickerPrices[name];
+    const old = oldTickerPrices[realKey];
     let percent = 0;
 
     if (Number.isFinite(old) && old !== 0) {
@@ -170,10 +200,12 @@ function updateTicker() {
       </div>
     `);
 
-    oldTickerPrices[name] = price;
+    oldTickerPrices[realKey] = price;
   });
 
-  tickerTrack.innerHTML = items.join("") + items.join("");
+  if (items.length > 0) {
+    tickerTrack.innerHTML = items.join("") + items.join("");
+  }
 }
 
 async function loadGold() {
@@ -245,12 +277,10 @@ async function loadDoviz() {
     const rows = result.data
       .map(item => {
         const code = cleanName(item.symbol || item.kod || "");
+        const buy = Number(item.bid ?? item.alis);
+        const sell = Number(item.ask ?? item.satis);
 
-        return {
-          code,
-          buy: item.bid ?? item.alis,
-          sell: item.ask ?? item.satis
-        };
+        return { code, buy, sell };
       })
       .filter(item => dovizOrder.includes(item.code))
       .sort((a, b) => dovizOrder.indexOf(a.code) - dovizOrder.indexOf(b.code));
@@ -261,16 +291,25 @@ async function loadDoviz() {
     }
 
     rows.forEach(item => {
-      tickerData[item.code] = Number(item.sell);
+      tickerData[item.code] = item.sell;
     });
 
-    dovizBody.innerHTML = rows.map(item => `
-      <tr>
-        <td>${item.code}</td>
-        <td>${formatNumber(item.buy)}</td>
-        <td>${formatNumber(item.sell)}</td>
-      </tr>
-    `).join("");
+    dovizBody.innerHTML = rows.map(item => {
+      const percent = getPercent(item.code, item.sell);
+
+      oldPrices[item.code] = {
+        buy: item.buy,
+        sell: item.sell
+      };
+
+      return `
+        <tr>
+          <td>${createNameCell(item.code, percent)}</td>
+          <td>${formatNumber(item.buy)}</td>
+          <td>${formatNumber(item.sell)}</td>
+        </tr>
+      `;
+    }).join("");
 
     updateTicker();
 
@@ -284,6 +323,21 @@ function toggleMenu() {
   if (menu) menu.classList.toggle("show");
 }
 
+function openFullScreen() {
+  const elem = document.documentElement;
+
+  if (elem.requestFullscreen) elem.requestFullscreen();
+  else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
+  else if (elem.msRequestFullscreen) elem.msRequestFullscreen();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    const loader = document.getElementById("loader");
+    if (loader) loader.style.display = "none";
+  }, 1200);
+});
+
 updateClock();
 setInterval(updateClock, 1000);
 
@@ -293,7 +347,5 @@ setInterval(updateDate, 60000);
 loadGold();
 setInterval(loadGold, 60000);
 
-loadDoviz();
-setInterval(loadDoviz, 60000);
 loadDoviz();
 setInterval(loadDoviz, 60000);
