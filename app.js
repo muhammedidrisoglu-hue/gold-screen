@@ -17,12 +17,6 @@ function updateDate() {
   if (dateElement) dateElement.innerText = `${day}/${month}/${year}`;
 }
 
-updateClock();
-setInterval(updateClock, 1000);
-
-updateDate();
-setInterval(updateDate, 60000);
-
 let oldPrices = {};
 
 const madenOrder = [
@@ -37,6 +31,11 @@ const sarrafiyeOrder = [
   "YENİ TAM", "ESKİ TAM", "YENİ ATA", "ESKİ ATA",
   "YENİ GREMSE", "ESKİ GREMSE", "YENİ ATA5", "ESKİ ATA5",
   "GRAM ALTIN"
+];
+
+const dovizOrder = [
+  "USDTRY", "EURTRY", "EURUSD", "GBPTRY", "CHFTRY",
+  "AUDTRY", "CADTRY", "SARTRY", "JPYTRY"
 ];
 
 function cleanName(name) {
@@ -88,6 +87,38 @@ function formatNumber(value) {
   return number.toFixed(3);
 }
 
+function createGoldRow(item) {
+  const buy = item.buy;
+  const sell = item.sell;
+
+  const buyNumber = parsePrice(buy);
+  const sellNumber = parsePrice(sell);
+
+  let buyClass = "";
+  let sellClass = "";
+
+  if (oldPrices[item.key]) {
+    if (buyNumber > oldPrices[item.key].buy) buyClass = "up";
+    else if (buyNumber < oldPrices[item.key].buy) buyClass = "down";
+
+    if (sellNumber > oldPrices[item.key].sell) sellClass = "up";
+    else if (sellNumber < oldPrices[item.key].sell) sellClass = "down";
+  }
+
+  oldPrices[item.key] = {
+    buy: buyNumber,
+    sell: sellNumber
+  };
+
+  return `
+    <tr>
+      <td>${item.key}</td>
+      <td class="${buyClass}">${buy}</td>
+      <td class="${sellClass}">${sell}</td>
+    </tr>
+  `;
+}
+
 async function loadGold() {
   try {
     const response = await fetch(
@@ -122,40 +153,8 @@ async function loadGold() {
     madenItems.sort((a, b) => getOrderIndex(a.key, madenOrder) - getOrderIndex(b.key, madenOrder));
     sarrafiyeItems.sort((a, b) => getOrderIndex(a.key, sarrafiyeOrder) - getOrderIndex(b.key, sarrafiyeOrder));
 
-    function createRow(item) {
-      const buy = item.buy;
-      const sell = item.sell;
-
-      const buyNumber = parsePrice(buy);
-      const sellNumber = parsePrice(sell);
-
-      let buyClass = "";
-      let sellClass = "";
-
-      if (oldPrices[item.key]) {
-        if (buyNumber > oldPrices[item.key].buy) buyClass = "up";
-        else if (buyNumber < oldPrices[item.key].buy) buyClass = "down";
-
-        if (sellNumber > oldPrices[item.key].sell) sellClass = "up";
-        else if (sellNumber < oldPrices[item.key].sell) sellClass = "down";
-      }
-
-      oldPrices[item.key] = {
-        buy: buyNumber,
-        sell: sellNumber
-      };
-
-      return `
-        <tr>
-          <td>${item.key}</td>
-          <td class="${buyClass}">${buy}</td>
-          <td class="${sellClass}">${sell}</td>
-        </tr>
-      `;
-    }
-
-    madenBody.innerHTML = madenItems.map(createRow).join("");
-    sarrafiyeBody.innerHTML = sarrafiyeItems.map(createRow).join("");
+    madenBody.innerHTML = madenItems.map(createGoldRow).join("");
+    sarrafiyeBody.innerHTML = sarrafiyeItems.map(createGoldRow).join("");
 
   } catch (err) {
     console.log("Gold Error:", err);
@@ -183,18 +182,6 @@ async function loadDoviz() {
       console.log("Döviz data gelmedi:", result);
       return;
     }
-
-    const dovizOrder = [
-      "USDTRY",
-      "EURTRY",
-      "EURUSD",
-      "GBPTRY",
-      "CHFTRY",
-      "AUDTRY",
-      "CADTRY",
-      "SARTRY",
-      "JPYTRY"
-    ];
 
     const rows = result.data
       .map(item => {
@@ -227,11 +214,20 @@ async function loadDoviz() {
   }
 }
 
+function toggleMenu() {
+  const menu = document.getElementById("mobileMenu");
+  if (menu) menu.classList.toggle("show");
+}
+
+updateClock();
+setInterval(updateClock, 1000);
+
+updateDate();
+setInterval(updateDate, 60000);
+
 loadGold();
 setInterval(loadGold, 60000);
 
 loadDoviz();
 setInterval(loadDoviz, 60000);
-function toggleMenu() {
-  document.getElementById("mobileMenu").classList.toggle("show");
-}
+ 

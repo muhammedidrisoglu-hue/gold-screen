@@ -11,15 +11,20 @@ body{
   justify-content:space-between;
   align-items:center;
   background:#fff;
-  padding:22px 34px;
+  padding:18px 34px;
   border-radius:22px;
   margin-bottom:24px;
   box-shadow:0 6px 22px rgba(0,0,0,0.06);
+  position:relative;
 }
 
 .nav-logo{
-  width:390px;
+  width:360px;
   height:auto;
+}
+
+.menu-btn{
+  display:none;
 }
 
 .nav-links{
@@ -30,9 +35,9 @@ body{
 .nav-links a{
   text-decoration:none;
   color:#222;
-  font-size:20px;
+  font-size:18px;
   font-weight:700;
-  padding:14px 32px;
+  padding:13px 30px;
   border-radius:999px;
   background:#f4f4f4;
 }
@@ -46,7 +51,7 @@ body{
 .sections{
   display:grid;
   grid-template-columns:repeat(3, 1fr);
-  gap:28px;
+  gap:26px;
 }
 
 .price-section{
@@ -60,36 +65,37 @@ body{
 
 .price-section h2{
   color:#c9a646;
-  font-size:36px;
+  font-size:34px;
   margin:0 0 24px;
 }
 
 table{
   width:100%;
   border-collapse:separate;
-  border-spacing:0 16px;
+  border-spacing:0 14px;
 }
 
 th{
   color:#c9a646;
-  font-size:28px;
-  padding:10px;
+  font-size:24px;
+  padding:8px;
   text-align:center;
 }
 
 td{
   background:#f1f1f1;
   color:#222;
-  font-size:28px;
+  font-size:24px;
   font-weight:800;
   text-align:center;
-  padding:24px 14px;
+  padding:20px 12px;
 }
 
 td:first-child{
   text-align:left;
-  font-size:28px;
+  font-size:24px;
   font-weight:900;
+  padding-left:18px;
   border-radius:16px 0 0 16px;
 }
 
@@ -119,83 +125,33 @@ td:last-child{
   100%{transform:scale(1);}
 }
 
-@media (max-width:768px){
-  body{
-    padding:16px;
-  }
-
-  .nav-header{
-    padding:16px;
-    gap:12px;
-  }
-
-  .nav-logo{
-    width:260px;
-  }
-
-  .nav-links a{
-    font-size:16px;
-    padding:10px 18px;
-  }
-
-  .sections{
-    display:block !important;
-  }
-
-  .price-section{
-    width:100% !important;
-    max-width:100% !important;
-    box-sizing:border-box;
-    margin-bottom:22px;
-    max-height:620px;
-    padding:18px;
-  }
-
-  .price-section h2{
-    font-size:30px;
-  }
-
-  th{
-    font-size:22px;
-  }
-
-  td{
-    font-size:22px;
-    padding:18px 10px;
-  }
-
-  td:first-child{
-    font-size:22px;
-  }
-}
+/* MOBILE */
 @media screen and (max-width:768px){
 
   body{
-    padding:10px;
+    padding:12px;
   }
 
   .nav-header{
     padding:14px 16px;
     border-radius:18px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
   }
 
   .nav-logo{
-    width:190px;
+    width:220px;
   }
 
   .menu-btn{
     display:block;
-    font-size:30px;
+    font-size:32px;
+    color:#222;
     cursor:pointer;
   }
 
   .nav-links{
     display:none;
     position:absolute;
-    top:80px;
+    top:78px;
     right:14px;
     background:white;
     border-radius:16px;
@@ -218,44 +174,41 @@ td:last-child{
   }
 
   .sections{
-    display:flex;
-    flex-direction:column;
-    gap:18px;
+    display:flex !important;
+    flex-direction:column !important;
+    gap:22px;
   }
 
   .price-section{
     width:100%;
     box-sizing:border-box;
-    padding:16px;
-    border-radius:20px;
+    padding:18px;
+    border-radius:22px;
     max-height:520px;
   }
 
   .price-section h2{
-    font-size:28px;
-    margin-bottom:14px;
+    font-size:34px;
+    margin-bottom:16px;
   }
 
   table{
-    width:100%;
     border-spacing:0 10px;
   }
 
   th{
-    font-size:18px;
+    font-size:22px;
     padding:8px;
   }
 
   td{
-    font-size:18px;
-    padding:16px 10px;
-    font-weight:700;
+    font-size:20px;
+    padding:16px 8px;
   }
 
   td:first-child{
-    font-size:18px;
-    padding-left:16px;
+    font-size:20px;
+    padding-left:14px;
     width:42%;
   }
-
 }
