@@ -134,6 +134,8 @@ tbody tr td:last-child{
 }
 
 .price-section{
+max-height: 600px;
+overflow-y: auto;
   background:white;
   border-radius:22px;
   padding:20px;
