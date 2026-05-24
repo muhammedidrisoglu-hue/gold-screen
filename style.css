@@ -1,119 +1,110 @@
 body{
   margin:0;
-  padding:20px;
+  padding:24px;
   background:#f4f4f4;
   color:#222;
   font-family:Arial, sans-serif;
-  overflow:auto;
 }
 
-.top-header{
+.nav-header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  background:white;
-  border-radius:20px;
-  padding:20px 35px;
-  margin-bottom:25px;
-  box-shadow:0 8px 25px rgba(0,0,0,0.08);
+  background:#fff;
+  padding:22px 34px;
+  border-radius:22px;
+  margin-bottom:24px;
+  box-shadow:0 6px 22px rgba(0,0,0,0.06);
 }
 
-.logo{
-  width:450px;
+.nav-logo{
+  width:390px;
   height:auto;
 }
 
-.shop-info{
-  text-align:center;
-  flex:1;
+.nav-links{
+  display:flex;
+  gap:18px;
 }
 
-.shop-info h1{
-  margin:0;
-  font-size:55px;
+.nav-links a{
+  text-decoration:none;
   color:#222;
+  font-size:20px;
+  font-weight:700;
+  padding:14px 32px;
+  border-radius:999px;
+  background:#f4f4f4;
 }
 
-.shop-info p{
-  margin:4px 0;
-  font-size:22px;
-  color:#444;
+.nav-links a.active{
+  background:#d4af37;
+  color:#fff;
+  box-shadow:0 4px 12px rgba(212,175,55,0.4);
 }
 
-.shop-info p:last-child{
-  direction:ltr;
-  unicode-bidi:embed;
+.sections{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:28px;
 }
 
-.time-box{
-  width:220px;
-  text-align:center;
+.price-section{
+  background:#fff;
+  border-radius:24px;
+  padding:28px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.08);
+  max-height:760px;
+  overflow-y:auto;
 }
 
-#clock{
-  font-size:48px;
-  margin:0;
-  color:#222;
-}
-
-#date{
-  font-size:32px;
-  font-weight:bold;
-  color:#222;
-  margin:8px 0 0;
+.price-section h2{
+  color:#c9a646;
+  font-size:36px;
+  margin:0 0 24px;
 }
 
 table{
   width:100%;
   border-collapse:separate;
-border-spacing:0 30px;
+  border-spacing:0 16px;
 }
 
-thead th{
+th{
   color:#c9a646;
-  font-size:34px;
-  padding:15px;
+  font-size:28px;
+  padding:10px;
   text-align:center;
 }
 
-tbody tr{
-  background:#f1f1f1;
-  border-radius:22px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.04);
-}
-
 td{
-padding:46px 32px;
-text-align:center;
-font-size:52px;
-color:#222;
-font-weight:800;
-border-radius:30px;
+  background:#f1f1f1;
+  color:#222;
+  font-size:28px;
+  font-weight:800;
+  text-align:center;
+  padding:24px 14px;
 }
 
 td:first-child{
   text-align:left;
-  padding-left:35px;
-  font-size:40px;
+  font-size:28px;
   font-weight:900;
+  border-radius:16px 0 0 16px;
 }
 
-tbody tr td:first-child{
-  border-radius:22px 0 0 22px;
-}
-
-tbody tr td:last-child{
-  border-radius:0 22px 22px 0;
+td:last-child{
+  border-radius:0 16px 16px 0;
 }
 
 .up{
   color:green !important;
-  animation:pulseGreen 0.5s;
+  animation:pulseGreen .5s;
 }
 
 .down{
   color:red !important;
-  animation:pulseRed 0.5s;
+  animation:pulseRed .5s;
 }
 
 @keyframes pulseGreen{
@@ -127,132 +118,53 @@ tbody tr td:last-child{
   50%{transform:scale(1.12);}
   100%{transform:scale(1);}
 }
-.sections{
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap:20px;
-}
 
-.price-section{
-max-height: 600px;
-overflow-y: auto;
-  background:white;
-  border-radius:22px;
-  padding:20px;
-  box-shadow:0 8px 25px rgba(0,0,0,0.08);
-}
+@media (max-width:768px){
+  body{
+    padding:16px;
+  }
 
-.price-section h2{
-  color:#c9a646;
-  font-size:32px;
-  margin:0 0 15px;
-}
+  .nav-header{
+    padding:16px;
+    gap:12px;
+  }
 
-.price-section table{
-  width:100%;
-  border-spacing:0 10px;
-}
+  .nav-logo{
+    width:260px;
+  }
 
-.price-section th{
-  color:#c9a646;
-  font-size:24px;
-  padding:10px;
-}
-
-.price-section td{
-  background:#f3f3f3;
-  font-size:24px;
-  padding:18px 10px;
-  border:none;
-}
-
-.price-section td:first-child{
-  text-align:left;
-  font-size:24px;
-  font-weight:900;
-  border-radius:16px 0 0 16px;
-}
-
-.price-section td:last-child{
-  border-radius:0 16px 16px 0;
-}
-
-/* ===== NAVBAR ===== */
-
-.nav-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  background:#ffffff;
-  padding:14px 30px;
-  border-radius:20px;
-  margin-bottom:20px;
-  box-shadow:0 4px 20px rgba(0,0,0,0.06);
-}
-
-/* اللوغو */
-.nav-logo{
-  width:400px;
-  height:auto;
-}
-
-/* الروابط */
-.nav-links{
-  display:flex;
-  align-items:center;
-  gap:18px;
-}
-
-/* شكل الزر */
-.nav-links a{
-  text-decoration:none;
-  color:#222;
-  font-size:18px;
-  font-weight:600;
-  padding:12px 28px;
-  border-radius:999px;
-  background:#f4f4f4;
-  transition:0.3s;
-}
-
-/* hover */
-.nav-links a:hover{
-  background:#d4af37;
-  color:white;
-}
-
-/* الصفحة الحالية */
-.nav-links a.active{
-  background:#d4af37;
-  color:white;
-  box-shadow:0 4px 12px rgba(212,175,55,0.4);
-}
-
-
-.contact-page{
-  max-width:900px;
-  margin:40px auto;
-  background:white;
-  padding:40px;
-  border-radius:25px;
-  box-shadow:0 8px 25px rgba(0,0,0,0.08);
-  font-size:28px;
-}
-
-.contact-page h1{
-  color:#d4af37;
-  font-size:50px;
-}
-@media (max-width: 768px){
+  .nav-links a{
+    font-size:16px;
+    padding:10px 18px;
+  }
 
   .sections{
-    grid-template-columns: 1fr;
-    gap:20px;
+    display:block !important;
   }
 
   .price-section{
-    width:100%;
-    min-height:auto;
+    width:100% !important;
+    max-width:100% !important;
+    box-sizing:border-box;
+    margin-bottom:22px;
+    max-height:620px;
+    padding:18px;
   }
 
+  .price-section h2{
+    font-size:30px;
+  }
+
+  th{
+    font-size:22px;
+  }
+
+  td{
+    font-size:22px;
+    padding:18px 10px;
+  }
+
+  td:first-child{
+    font-size:22px;
+  }
 }
