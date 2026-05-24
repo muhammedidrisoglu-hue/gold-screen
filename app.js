@@ -122,7 +122,7 @@ function createNameCell(name, percent) {
 
   return `
     <span class="price-name">${name}</span>
-    <span class="price-desc">Canlı fiyat</span>
+    <span class="price-desc"></span>
     <span class="price-rate ${cls}">${arrow} %${Math.abs(percent).toFixed(2)}</span>
   `;
 }
