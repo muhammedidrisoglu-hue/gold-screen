@@ -232,3 +232,6 @@ setInterval(loadGold, 60000);
 
 loadDoviz();
 setInterval(loadDoviz, 60000);
+function toggleMenu() {
+  document.getElementById("mobileMenu").classList.toggle("show");
+}

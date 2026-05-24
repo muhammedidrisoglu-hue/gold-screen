@@ -232,5 +232,65 @@ td:last-child{
     font-size: 20px;
     padding-left: 14px;
   }
+.menu-btn{
+  display:none;
+  font-size:34px;
+  cursor:pointer;
+  color:#222;
 }
 
+/* MOBILE */
+@media screen and (max-width:768px){
+
+  body{
+    padding:12px;
+  }
+
+  .sections{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:18px;
+  }
+
+  .price-section{
+    width:100% !important;
+    box-sizing:border-box;
+  }
+
+  .nav-header{
+    position:relative;
+    padding:14px 18px;
+  }
+
+  .nav-logo{
+    width:220px;
+  }
+
+  .menu-btn{
+    display:block;
+  }
+
+  .nav-links{
+    display:none;
+    position:absolute;
+    top:85px;
+    right:15px;
+    background:white;
+    border-radius:18px;
+    padding:12px;
+    flex-direction:column;
+    gap:10px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.12);
+    z-index:999;
+  }
+
+  .nav-links.show{
+    display:flex;
+  }
+
+  .nav-links a{
+    width:160px;
+    text-align:center;
+  }
+
+}
