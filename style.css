@@ -19,7 +19,7 @@ body{
 }
 
 .logo{
-  width:210px;
+  width:450px;
   height:auto;
 }
 
@@ -173,4 +173,54 @@ tbody tr td:last-child{
 
 .price-section td:last-child{
   border-radius:0 16px 16px 0;
+}
+
+.nav-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:white;
+  border-radius:20px;
+  padding:18px 35px;
+  margin-bottom:25px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.08);
+}
+
+.nav-logo{
+  width:190px;
+  height:auto;
+}
+
+.nav-links{
+  display:flex;
+  gap:18px;
+}
+
+.nav-links a{
+  text-decoration:none;
+  color:#222;
+  font-size:22px;
+  font-weight:bold;
+  padding:12px 24px;
+  border-radius:18px;
+}
+
+.nav-links a:hover{
+  background:#d4af37;
+  color:white;
+}
+
+.contact-page{
+  max-width:900px;
+  margin:40px auto;
+  background:white;
+  padding:40px;
+  border-radius:25px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.08);
+  font-size:28px;
+}
+
+.contact-page h1{
+  color:#d4af37;
+  font-size:50px;
 }
