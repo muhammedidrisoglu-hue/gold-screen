@@ -1,3 +1,10 @@
+const ALTINAPI_KEY = "hapi_0213f88582a046e6836fdb7bafb43c3d";
+
+let oldPrices = {};
+let oldTickerPrices = {};
+let tickerData = {};
+let latestItems = {};
+
 function updateClock() {
   const now = new Date();
   const h = String(now.getHours()).padStart(2, "0");
@@ -15,84 +22,40 @@ function updateDate() {
   if (el) el.innerText = `${d}/${m}/${y}`;
 }
 
-const ALTINAPI_KEY = "hapi_0213f88582a046e6836fdb7bafb43c3d";
-
-let oldPrices = {};
-let oldTickerPrices = {};
-let tickerData = {};
-let latestItems = {};
-let socket = null;
-
 const symbols = [
-  "ALTIN", "XAUUSD", "PARUSD", "PAREUR", "GUMUSD", "XAGUSD", "XAUXAG",
-  "CEYREK_YENI", "CEYREK_ESKI",
-  "YARIM_YENI", "YARIM_ESKI",
-  "TEK_YENI", "TEK_ESKI",
-  "ATA_YENI", "ATA_ESKI",
-  "GREMESE_YENI", "GREMESE_ESKI",
-  "ATA5_YENI", "ATA5_ESKI",
-  "USDTRY", "EURTRY", "EURUSD", "GBPTRY", "CHFTRY",
-  "AUDTRY", "CADTRY", "SARTRY", "JPYTRY"
+  "ALTIN","XAUUSD","PARUSD","PAREUR","GUMUSD","XAGUSD","XAUXAG",
+  "CEYREK_YENI","CEYREK_ESKI","YARIM_YENI","YARIM_ESKI",
+  "TEK_YENI","TEK_ESKI","ATA_YENI","ATA_ESKI",
+  "GREMESE_YENI","GREMESE_ESKI","ATA5_YENI","ATA5_ESKI",
+  "USDTRY","EURTRY","EURUSD","GBPTRY","CHFTRY","AUDTRY","CADTRY","SARTRY","JPYTRY"
 ];
 
 const nameMap = {
-  ALTIN: "HAS ALTIN",
-  XAUUSD: "ALTIN ONS",
-  PARUSD: "USD/KG",
-  PAREUR: "EUR/KG",
-  GUMUSD: "GÜMÜŞ USD",
-  XAGUSD: "GÜMÜŞ ONS",
-  XAUXAG: "ALTIN GÜMÜŞ",
-
-  CEYREK_YENI: "YENİ ÇEYREK",
-  CEYREK_ESKI: "ESKİ ÇEYREK",
-  YARIM_YENI: "YENİ YARIM",
-  YARIM_ESKI: "ESKİ YARIM",
-  TEK_YENI: "YENİ TAM",
-  TEK_ESKI: "ESKİ TAM",
-  ATA_YENI: "YENİ ATA",
-  ATA_ESKI: "ESKİ ATA",
-  GREMESE_YENI: "YENİ GREMSE",
-  GREMESE_ESKI: "ESKİ GREMSE",
-  ATA5_YENI: "YENİ ATA5",
-  ATA5_ESKI: "ESKİ ATA5"
+  ALTIN:"HAS ALTIN",
+  XAUUSD:"ALTIN ONS",
+  PARUSD:"USD/KG",
+  PAREUR:"EUR/KG",
+  GUMUSD:"GÜMÜŞ USD",
+  XAGUSD:"GÜMÜŞ ONS",
+  XAUXAG:"ALTIN GÜMÜŞ",
+  CEYREK_YENI:"YENİ ÇEYREK",
+  CEYREK_ESKI:"ESKİ ÇEYREK",
+  YARIM_YENI:"YENİ YARIM",
+  YARIM_ESKI:"ESKİ YARIM",
+  TEK_YENI:"YENİ TAM",
+  TEK_ESKI:"ESKİ TAM",
+  ATA_YENI:"YENİ ATA",
+  ATA_ESKI:"ESKİ ATA",
+  GREMESE_YENI:"YENİ GREMSE",
+  GREMESE_ESKI:"ESKİ GREMSE",
+  ATA5_YENI:"YENİ ATA5",
+  ATA5_ESKI:"ESKİ ATA5"
 };
 
-const madenOrder = [
-  "HAS ALTIN",
-  "ALTIN ONS",
-  "USD/KG",
-  "EUR/KG",
-  "GÜMÜŞ USD",
-  "GÜMÜŞ ONS",
-  "ALTIN GÜMÜŞ"
-];
-
-const dovizOrder = [
-  "USDTRY", "EURTRY", "EURUSD", "GBPTRY", "CHFTRY",
-  "AUDTRY", "CADTRY", "SARTRY", "JPYTRY"
-];
-
-const sarrafiyeOrder = [
-  "YENİ ÇEYREK", "ESKİ ÇEYREK",
-  "YENİ YARIM", "ESKİ YARIM",
-  "YENİ TAM", "ESKİ TAM",
-  "YENİ ATA", "ESKİ ATA",
-  "YENİ GREMSE", "ESKİ GREMSE",
-  "YENİ ATA5", "ESKİ ATA5"
-];
-
-const tickerOrder = [
-  "HAS ALTIN",
-  "ALTIN ONS",
-  "GÜMÜŞ ONS",
-  "GÜMÜŞ USD",
-  "USDTRY",
-  "EURTRY",
-  "YENİ ÇEYREK",
-  "YENİ YARIM",
-  "YENİ TAM"
-];
+const madenOrder = ["HAS ALTIN","ALTIN ONS","USD/KG","EUR/KG","GÜMÜŞ USD","GÜMÜŞ ONS","ALTIN GÜMÜŞ"];
+const dovizOrder = ["USDTRY","EURTRY","EURUSD","GBPTRY","CHFTRY","AUDTRY","CADTRY","SARTRY","JPYTRY"];
+const sarrafiyeOrder = ["YENİ ÇEYREK","ESKİ ÇEYREK","YENİ YARIM","ESKİ YARIM","YENİ TAM","ESKİ TAM","YENİ ATA","ESKİ ATA","YENİ GREMSE","ESKİ GREMSE","YENİ ATA5","ESKİ ATA5"];
+const tickerOrder = ["HAS ALTIN","ALTIN ONS","GÜMÜŞ ONS","GÜMÜŞ USD","USDTRY","EURTRY","YENİ ÇEYREK","YENİ YARIM","YENİ TAM"];
 
 function parsePrice(value) {
   if (typeof value === "number") return value;
@@ -116,15 +79,8 @@ function getPercent(key, newValue) {
 
 function createNameCell(name, percent) {
   const up = percent >= 0;
-
   return `
-    <div style="
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      width:100%;
-      gap:8px;
-    ">
+    <div style="display:flex;align-items:center;justify-content:space-between;width:100%;gap:8px;">
       <span class="price-name">${name}</span>
       <span class="price-rate ${up ? "up" : "down"}">
         ${up ? "▲" : "▼"} %${Math.abs(percent).toFixed(2)}
@@ -199,15 +155,15 @@ function updateTicker() {
 }
 
 function renderPrices() {
-  const madenBody = document.getElementById("madenBody");
-  const dovizBody = document.getElementById("dovizBody");
-  const sarrafiyeBody = document.getElementById("sarrafiyeBody");
-
   const all = Object.values(latestItems);
 
   const maden = madenOrder.map(name => all.find(i => i.name === name)).filter(Boolean);
   const doviz = dovizOrder.map(name => all.find(i => i.name === name)).filter(Boolean);
   const sarrafiye = sarrafiyeOrder.map(name => all.find(i => i.name === name)).filter(Boolean);
+
+  const madenBody = document.getElementById("madenBody");
+  const dovizBody = document.getElementById("dovizBody");
+  const sarrafiyeBody = document.getElementById("sarrafiyeBody");
 
   if (madenBody) madenBody.innerHTML = maden.map(createRow).join("");
   if (dovizBody) dovizBody.innerHTML = doviz.map(createRow).join("");
@@ -220,49 +176,22 @@ function normalizeItem(item) {
   const symbol = item.symbol || item.code || item.key || item.name;
   if (!symbol) return null;
 
-  const buy = item.bid ?? item.buy ?? item.alis ?? item.alış;
-  const sell = item.ask ?? item.sell ?? item.satis ?? item.satış;
+  const buy = item.buy ?? item.bid ?? item.alis ?? item.alış;
+  const sell = item.sell ?? item.ask ?? item.satis ?? item.satış;
 
   if (buy === undefined || sell === undefined) return null;
 
   const name = nameMap[symbol] || symbol;
 
-  let type = null;
+  if (!madenOrder.includes(name) && !dovizOrder.includes(name) && !sarrafiyeOrder.includes(name)) {
+    return null;
+  }
 
-  if (madenOrder.includes(name)) type = "maden";
-  else if (dovizOrder.includes(name)) type = "doviz";
-  else if (sarrafiyeOrder.includes(name)) type = "sarrafiye";
-  else return null;
-
-  return { symbol, name, buy, sell, type };
+  return { symbol, name, buy, sell };
 }
 
 function handleLiveData(data) {
-  let list = [];
-
-  if (Array.isArray(data)) {
-    list = data;
-  }
-
-  else if (Array.isArray(data?.data)) {
-    list = data.data;
-  }
-
-  else if (Array.isArray(data?.prices)) {
-    list = data.prices;
-  }
-
-  else if (data?.data && typeof data.data === "object") {
-    list = Object.values(data.data);
-  }
-
-  else if (data?.prices && typeof data.prices === "object") {
-    list = Object.values(data.prices);
-  }
-
-  else if (data && typeof data === "object") {
-    list = Object.values(data);
-  }
+  const list = Array.isArray(data) ? data : data?.data || data?.prices || [];
 
   list.forEach(raw => {
     const item = normalizeItem(raw);
@@ -284,31 +213,16 @@ function openFullScreen() {
   else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
   else if (elem.msRequestFullscreen) elem.msRequestFullscreen();
 }
-async function loadPricesREST() {
-  try {
-    const response = await fetch(
-      `https://altinapi.com/api/v1/prices?api_key=${ALTINAPI_KEY}&t=${Date.now()}`
-    );
 
-    const result = await response.json();
+document.addEventListener("DOMContentLoaded", () => {
+  updateClock();
+  updateDate();
 
-    console.log("REST DATA", result);
+  setInterval(updateClock, 1000);
+  setInterval(updateDate, 60000);
 
-    handleLiveData(result);
-
-  } catch (err) {
-    console.log("REST ERROR", err);
-  }
-}
-
-function startSocket() {
-  socket = io("https://altinapi.com", {
-    transports: ["websocket", "polling"],
-    upgrade: true,
-    reconnection: true,
-    reconnectionAttempts: Infinity,
-    reconnectionDelay: 1000,
-    timeout: 20000,
+  const socket = io("https://altinapi.com", {
+    transports: ["websocket"],
     auth: {
       api_key: ALTINAPI_KEY
     }
@@ -336,24 +250,9 @@ function startSocket() {
   socket.on("disconnect", () => {
     console.log("SOCKET DISCONNECTED");
   });
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-
-  updateClock();
-  updateDate();
-
-  setInterval(updateClock, 1000);
-  setInterval(updateDate, 60000);
-
-  loadPricesREST();
-  setInterval(loadPricesREST, 15000);
-
-  startSocket();
 
   setTimeout(() => {
     const loader = document.getElementById("loader");
     if (loader) loader.style.display = "none";
   }, 900);
-
 });
