@@ -21,17 +21,16 @@ let oldPrices = {};
 let oldTickerPrices = {};
 let tickerData = {};
 let latestItems = {};
+let socket = null;
 
 const symbols = [
   "ALTIN", "XAUUSD", "PARUSD", "PAREUR", "GUMUSD", "XAGUSD", "XAUXAG",
-
   "CEYREK_YENI", "CEYREK_ESKI",
   "YARIM_YENI", "YARIM_ESKI",
   "TEK_YENI", "TEK_ESKI",
   "ATA_YENI", "ATA_ESKI",
   "GREMESE_YENI", "GREMESE_ESKI",
   "ATA5_YENI", "ATA5_ESKI",
-
   "USDTRY", "EURTRY", "EURUSD", "GBPTRY", "CHFTRY",
   "AUDTRY", "CADTRY", "SARTRY", "JPYTRY"
 ];
@@ -109,78 +108,13 @@ function formatNumber(value) {
   }).format(n);
 }
 
-function getTodayKey() {
-  const d = new Date();
-
-  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
-}
-
 function getPercent(key, newValue) {
-
-  const todayKey = getTodayKey();
-
-  const savedDay =
-    localStorage.getItem("priceDay");
-
-  if (savedDay !== todayKey) {
-
-    localStorage.setItem(
-      "priceDay",
-      todayKey
-    );
-
-    localStorage.removeItem(
-      "basePrices"
-    );
-  }
-
-  const basePrices = JSON.parse(
-    localStorage.getItem("basePrices") || "{}"
-  );
-
-  if (!basePrices[key]) {
-
-    basePrices[key] = newValue;
-
-    localStorage.setItem(
-      "basePrices",
-      JSON.stringify(basePrices)
-    );
-
-    return 0;
-  }
-
-  const base = basePrices[key];
-
-  if (
-    !Number.isFinite(base) ||
-    base === 0
-  ) {
-    return 0;
-  }
-
-  return (
-    ((newValue - base) / base) * 100
-  );
+  const old = oldPrices[key]?.sell;
+  if (!Number.isFinite(old) || old === 0) return 0;
+  return ((newValue - old) / old) * 100;
 }
 
 function createNameCell(name, percent) {
-
-  if (percent === null) {
-    return `
-      <div style="
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        width:100%;
-      ">
-        <span class="price-name">
-          ${name}
-        </span>
-      </div>
-    `;
-  }
-
   const up = percent >= 0;
 
   return `
@@ -191,18 +125,14 @@ function createNameCell(name, percent) {
       width:100%;
       gap:8px;
     ">
-
-      <span class="price-name">
-        ${name}
-      </span>
-
+      <span class="price-name">${name}</span>
       <span class="price-rate ${up ? "up" : "down"}">
         ${up ? "▲" : "▼"} %${Math.abs(percent).toFixed(2)}
       </span>
-
     </div>
   `;
 }
+
 function createRow(item) {
   const buy = parsePrice(item.buy);
   const sell = parsePrice(item.sell);
@@ -331,15 +261,14 @@ function openFullScreen() {
   else if (elem.msRequestFullscreen) elem.msRequestFullscreen();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  updateClock();
-  updateDate();
-
-  setInterval(updateClock, 1000);
-  setInterval(updateDate, 60000);
-
-  const socket = io("https://altinapi.com", {
-    transports: ["websocket"],
+function startSocket() {
+  socket = io("https://altinapi.com", {
+    transports: ["websocket", "polling"],
+    upgrade: true,
+    reconnection: true,
+    reconnectionAttempts: Infinity,
+    reconnectionDelay: 1000,
+    timeout: 20000,
     auth: {
       api_key: ALTINAPI_KEY
     }
@@ -367,6 +296,16 @@ document.addEventListener("DOMContentLoaded", () => {
   socket.on("disconnect", () => {
     console.log("SOCKET DISCONNECTED");
   });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  updateClock();
+  updateDate();
+
+  setInterval(updateClock, 1000);
+  setInterval(updateDate, 60000);
+
+  startSocket();
 
   setTimeout(() => {
     const loader = document.getElementById("loader");
