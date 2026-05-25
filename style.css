@@ -214,7 +214,8 @@ td:last-child{
 .ticker-track{
   display:flex;
   width:max-content;
-  animation:tickerMove 42s linear infinite;
+  animation:tickerMove 35s linear infinite;
+  will-change:transform;
 }
 
 .ticker-item{
@@ -262,8 +263,13 @@ td:last-child{
 .ticker-down{color:#d94848}
 
 @keyframes tickerMove{
-  from{transform:translateX(0)}
-  to{transform:translateX(-50%)}
+  0%{
+    transform:translateX(0);
+  }
+
+  100%{
+    transform:translateX(-50%);
+  }
 }
 
 #loader{
@@ -408,5 +414,6 @@ td:last-child{
   .ticker-bar,
   #fullscreenBtn{
     display:none;
+    overflow:hidden;
   }
 }
