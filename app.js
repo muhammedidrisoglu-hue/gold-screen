@@ -260,6 +260,25 @@ function openFullScreen() {
   else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
   else if (elem.msRequestFullscreen) elem.msRequestFullscreen();
 }
+async function loadPricesREST() {
+  try {
+
+    const response = await fetch(
+      `https://altinapi.com/api/v1/prices?api_key=${ALTINAPI_KEY}&t=${Date.now()}`
+    );
+
+    const data = await response.json();
+
+    console.log("REST DATA", data);
+
+    handleLiveData(data);
+
+  } catch (err) {
+
+    console.log("REST ERROR", err);
+
+  }
+}
 
 function startSocket() {
   socket = io("https://altinapi.com", {
@@ -299,11 +318,15 @@ function startSocket() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+
   updateClock();
   updateDate();
 
   setInterval(updateClock, 1000);
   setInterval(updateDate, 60000);
+
+  loadPricesREST();
+  setInterval(loadPricesREST, 15000);
 
   startSocket();
 
@@ -311,4 +334,5 @@ document.addEventListener("DOMContentLoaded", () => {
     const loader = document.getElementById("loader");
     if (loader) loader.style.display = "none";
   }, 900);
+
 });
