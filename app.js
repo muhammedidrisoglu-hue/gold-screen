@@ -262,21 +262,24 @@ function openFullScreen() {
 }
 async function loadPricesREST() {
   try {
-
     const response = await fetch(
       `https://altinapi.com/api/v1/prices?api_key=${ALTINAPI_KEY}&t=${Date.now()}`
     );
 
-    const data = await response.json();
+    const result = await response.json();
 
-    console.log("REST DATA", data);
+    console.log("REST DATA", result);
 
-    handleLiveData(data);
+    const list =
+      result.data ||
+      result.prices ||
+      result.items ||
+      result;
+
+    handleLiveData(list);
 
   } catch (err) {
-
     console.log("REST ERROR", err);
-
   }
 }
 
