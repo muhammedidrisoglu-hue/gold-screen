@@ -238,7 +238,31 @@ function normalizeItem(item) {
 }
 
 function handleLiveData(data) {
-  const list = Array.isArray(data) ? data : data?.data || data?.prices || [];
+  let list = [];
+
+  if (Array.isArray(data)) {
+    list = data;
+  }
+
+  else if (Array.isArray(data?.data)) {
+    list = data.data;
+  }
+
+  else if (Array.isArray(data?.prices)) {
+    list = data.prices;
+  }
+
+  else if (data?.data && typeof data.data === "object") {
+    list = Object.values(data.data);
+  }
+
+  else if (data?.prices && typeof data.prices === "object") {
+    list = Object.values(data.prices);
+  }
+
+  else if (data && typeof data === "object") {
+    list = Object.values(data);
+  }
 
   list.forEach(raw => {
     const item = normalizeItem(raw);
@@ -270,13 +294,7 @@ async function loadPricesREST() {
 
     console.log("REST DATA", result);
 
-    const list =
-      result.data ||
-      result.prices ||
-      result.items ||
-      result;
-
-    handleLiveData(list);
+    handleLiveData(result);
 
   } catch (err) {
     console.log("REST ERROR", err);
