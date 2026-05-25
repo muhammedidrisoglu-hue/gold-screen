@@ -1,536 +1,300 @@
 function updateClock() {
   const now = new Date();
-  const hours = String(now.getHours()).padStart(2, "0");
-  const minutes = String(now.getMinutes()).padStart(2, "0");
-
-  const clockElement = document.getElementById("clock");
-
-  if (clockElement) {
-    clockElement.innerText = `${hours}:${minutes}`;
-  }
+  const h = String(now.getHours()).padStart(2, "0");
+  const m = String(now.getMinutes()).padStart(2, "0");
+  const el = document.getElementById("clock");
+  if (el) el.innerText = `${h}:${m}`;
 }
 
 function updateDate() {
   const today = new Date();
-
-  const day = String(today.getDate()).padStart(2, "0");
-  const month = String(today.getMonth() + 1).padStart(2, "0");
-  const year = today.getFullYear();
-
-  const dateElement = document.getElementById("date");
-
-  if (dateElement) {
-    dateElement.innerText = `${day}/${month}/${year}`;
-  }
+  const d = String(today.getDate()).padStart(2, "0");
+  const m = String(today.getMonth() + 1).padStart(2, "0");
+  const y = today.getFullYear();
+  const el = document.getElementById("date");
+  if (el) el.innerText = `${d}/${m}/${y}`;
 }
+
+const ALTINAPI_KEY = "hapi_0213f88582a046e6836fdb7bafb43c3d";
 
 let oldPrices = {};
 let oldTickerPrices = {};
 let tickerData = {};
+let latestItems = {};
 
-const API_KEY =
-  "a1692331famsh5bbb25822034d5bp180102jsn1334712f8d03";
+const symbols = [
+  "ALTIN", "XAUUSD", "PARUSD", "PAREUR", "GUMUSD", "XAGUSD", "XAUXAG",
+
+  "CEYREK_YENI", "CEYREK_ESKI",
+  "YARIM_YENI", "YARIM_ESKI",
+  "TEK_YENI", "TEK_ESKI",
+  "ATA_YENI", "ATA_ESKI",
+  "GREMESE_YENI", "GREMESE_ESKI",
+  "ATA5_YENI", "ATA5_ESKI",
+
+  "USDTRY", "EURTRY", "EURUSD", "GBPTRY", "CHFTRY",
+  "AUDTRY", "CADTRY", "SARTRY", "JPYTRY"
+];
+
+const nameMap = {
+  ALTIN: "HAS ALTIN",
+  XAUUSD: "ALTIN ONS",
+  PARUSD: "USD/KG",
+  PAREUR: "EUR/KG",
+  GUMUSD: "GÜMÜŞ USD",
+  XAGUSD: "GÜMÜŞ ONS",
+  XAUXAG: "ALTIN GÜMÜŞ",
+
+  CEYREK_YENI: "YENİ ÇEYREK",
+  CEYREK_ESKI: "ESKİ ÇEYREK",
+  YARIM_YENI: "YENİ YARIM",
+  YARIM_ESKI: "ESKİ YARIM",
+  TEK_YENI: "YENİ TAM",
+  TEK_ESKI: "ESKİ TAM",
+  ATA_YENI: "YENİ ATA",
+  ATA_ESKI: "ESKİ ATA",
+  GREMESE_YENI: "YENİ GREMSE",
+  GREMESE_ESKI: "ESKİ GREMSE",
+  ATA5_YENI: "YENİ ATA5",
+  ATA5_ESKI: "ESKİ ATA5"
+};
 
 const madenOrder = [
   "HAS ALTIN",
-  "HAS ALTIN ÇEKİLİ",
   "ALTIN ONS",
-  "USD KG",
-  "ALTIN USDKG",
-  "EUR KG",
-  "ALTIN EURKG",
-  "GÜMÜŞ ONS",
-  "GÜMÜŞ TL",
+  "USD/KG",
+  "EUR/KG",
   "GÜMÜŞ USD",
-  "GÜMÜŞ EUR",
-  "ALTIN GÜMÜŞ",
-  "PLATIN ONS",
-  "PALADYUM ONS",
-  "14 AYAR",
-  "22 AYAR"
-];
-
-const sarrafiyeOrder = [
-  "YENİ ÇEYREK",
-  "ESKİ ÇEYREK",
-  "YENİ YARIM",
-  "ESKİ YARIM",
-  "YENİ TAM",
-  "ESKİ TAM",
-  "YENİ ATA",
-  "ESKİ ATA",
-  "YENİ GREMSE",
-  "ESKİ GREMSE",
-  "YENİ ATA5",
-  "ESKİ ATA5",
-  "GRAM ALTIN"
+  "GÜMÜŞ ONS",
+  "ALTIN GÜMÜŞ"
 ];
 
 const dovizOrder = [
-  "USDTRY",
-  "EURTRY",
-  "EURUSD",
-  "GBPTRY",
-  "CHFTRY",
-  "AUDTRY",
-  "CADTRY",
-  "SARTRY",
-  "JPYTRY"
+  "USDTRY", "EURTRY", "EURUSD", "GBPTRY", "CHFTRY",
+  "AUDTRY", "CADTRY", "SARTRY", "JPYTRY"
+];
+
+const sarrafiyeOrder = [
+  "YENİ ÇEYREK", "ESKİ ÇEYREK",
+  "YENİ YARIM", "ESKİ YARIM",
+  "YENİ TAM", "ESKİ TAM",
+  "YENİ ATA", "ESKİ ATA",
+  "YENİ GREMSE", "ESKİ GREMSE",
+  "YENİ ATA5", "ESKİ ATA5"
 ];
 
 const tickerOrder = [
-  "ONS",
-  "USD KG",
-  "EUR KG",
-  "GÜMÜŞ ONS",
   "HAS ALTIN",
+  "ALTIN ONS",
+  "GÜMÜŞ ONS",
+  "GÜMÜŞ USD",
   "USDTRY",
-  "EURTRY"
+  "EURTRY",
+  "YENİ ÇEYREK",
+  "YENİ YARIM",
+  "YENİ TAM"
 ];
-
-function cleanName(name) {
-  return String(name)
-    .toUpperCase()
-    .replaceAll("İ", "I")
-    .replaceAll("Ü", "U")
-    .replaceAll("Ş", "S")
-    .replaceAll("Ğ", "G")
-    .replaceAll("Ö", "O")
-    .replaceAll("Ç", "C")
-    .replace(/[^A-Z0-9]/g, "");
-}
-
-function getOrderIndex(itemName, orderList) {
-  const item = cleanName(itemName);
-
-  const index = orderList.findIndex(orderName => {
-    const order = cleanName(orderName);
-
-    return (
-      item === order ||
-      item.includes(order) ||
-      order.includes(item)
-    );
-  });
-
-  return index === -1 ? 999 : index;
-}
-
-function getCategory(itemName) {
-  const name = cleanName(itemName);
-
-  if (
-    name.includes("CEYREK") ||
-    name.includes("YARIM") ||
-    name.includes("TAM") ||
-    name.includes("ATA") ||
-    name.includes("GREMSE")
-  ) {
-    return "sarrafiye";
-  }
-
-  return "maden";
-}
 
 function parsePrice(value) {
   if (typeof value === "number") return value;
-
-  return parseFloat(
-    String(value)
-      .replace(/\./g, "")
-      .replace(",", ".")
-  );
+  return parseFloat(String(value).replace(/\./g, "").replace(",", "."));
 }
 
 function formatNumber(value) {
-  const number = Number(value);
-
-  if (!Number.isFinite(number)) {
-    return "";
-  }
-
+  const n = Number(value);
+  if (!Number.isFinite(n)) return "";
   return new Intl.NumberFormat("tr-TR", {
     minimumFractionDigits: 0,
     maximumFractionDigits: 3
-  }).format(number);
+  }).format(n);
 }
 
 function getPercent(key, newValue) {
   const old = oldPrices[key]?.sell;
-
-  if (!Number.isFinite(old) || old === 0) {
-    return 0;
-  }
-
+  if (!Number.isFinite(old) || old === 0) return 0;
   return ((newValue - old) / old) * 100;
 }
 
 function createNameCell(name, percent) {
-  const isUp = percent >= 0;
-
-  const cls = isUp ? "up" : "down";
-
-  const arrow = isUp ? "▲" : "▼";
+  const up = percent >= 0;
 
   return `
     <div class="name-wrap">
       <span class="price-name">${name}</span>
-      <span class="price-rate ${cls}">
-        ${arrow} %${Math.abs(percent).toFixed(2)}
+      <span class="price-rate ${up ? "up" : "down"}">
+        ${up ? "▲" : "▼"} %${Math.abs(percent).toFixed(2)}
       </span>
     </div>
   `;
 }
 
-function createGoldRow(item) {
-  const buy = item.buy;
-  const sell = item.sell;
-
-  const buyNumber = parsePrice(buy);
-  const sellNumber = parsePrice(sell);
-
-  const percent = getPercent(item.key, sellNumber);
+function createRow(item) {
+  const buy = parsePrice(item.buy);
+  const sell = parsePrice(item.sell);
+  const percent = getPercent(item.name, sell);
 
   let buyClass = "";
   let sellClass = "";
 
-  if (oldPrices[item.key]) {
+  if (oldPrices[item.name]) {
+    if (buy > oldPrices[item.name].buy) buyClass = "up";
+    else if (buy < oldPrices[item.name].buy) buyClass = "down";
 
-    if (buyNumber > oldPrices[item.key].buy) {
-      buyClass = "up";
-    }
-
-    else if (buyNumber < oldPrices[item.key].buy) {
-      buyClass = "down";
-    }
-
-    if (sellNumber > oldPrices[item.key].sell) {
-      sellClass = "up";
-    }
-
-    else if (sellNumber < oldPrices[item.key].sell) {
-      sellClass = "down";
-    }
+    if (sell > oldPrices[item.name].sell) sellClass = "up";
+    else if (sell < oldPrices[item.name].sell) sellClass = "down";
   }
 
-  oldPrices[item.key] = {
-    buy: buyNumber,
-    sell: sellNumber
-  };
-
-  tickerData[item.key] = sellNumber;
+  oldPrices[item.name] = { buy, sell };
+  tickerData[item.name] = sell;
 
   return `
     <tr>
-      <td>
-        ${createNameCell(item.key, percent)}
-      </td>
-
-      <td class="${buyClass}">
-        ${formatNumber(buyNumber)}
-      </td>
-
-      <td class="${sellClass}">
-        ${formatNumber(sellNumber)}
-      </td>
+      <td>${createNameCell(item.name, percent)}</td>
+      <td class="${buyClass}">${formatNumber(buy)}</td>
+      <td class="${sellClass}">${formatNumber(sell)}</td>
     </tr>
   `;
 }
 
 function updateTicker() {
-
-  const tickerTrack =
-    document.getElementById("tickerTrack");
-
+  const tickerTrack = document.getElementById("tickerTrack");
   if (!tickerTrack) return;
 
   const items = [];
 
   tickerOrder.forEach(name => {
-
-    const cleanTarget = cleanName(name);
-
-    const realKey = Object.keys(tickerData).find(key => {
-
-      const cleanKey = cleanName(key);
-
-      return (
-        cleanKey === cleanTarget ||
-        cleanKey.includes(cleanTarget) ||
-        cleanTarget.includes(cleanKey)
-      );
-    });
-
-    if (!realKey) return;
-
-    const price = tickerData[realKey];
-
+    const price = tickerData[name];
     if (!Number.isFinite(price)) return;
 
-    const old = oldTickerPrices[realKey];
-
+    const old = oldTickerPrices[name];
     let percent = 0;
 
     if (Number.isFinite(old) && old !== 0) {
       percent = ((price - old) / old) * 100;
     }
 
-    const isUp = percent >= 0;
-
-    const arrow = isUp ? "▲" : "▼";
-
-    const cls =
-      isUp ? "ticker-up" : "ticker-down";
+    const up = percent >= 0;
 
     items.push(`
       <div class="ticker-item">
-        <strong>${name}</strong>
-
-        <span class="ticker-price">
-          ${formatNumber(price)}
-        </span>
-
-        <span class="${cls}">
-          ${arrow} %${Math.abs(percent).toFixed(2)}
-        </span>
+        <div class="ticker-left">
+          <strong>${name}</strong>
+          <span class="${up ? "ticker-up" : "ticker-down"}">
+            ${up ? "▲" : "▼"} %${Math.abs(percent).toFixed(2)}
+          </span>
+        </div>
+        <span class="ticker-price">${formatNumber(price)}</span>
       </div>
     `);
 
-    oldTickerPrices[realKey] = price;
+    oldTickerPrices[name] = price;
   });
 
-  tickerTrack.innerHTML =
-    items.join("") + items.join("");
+  tickerTrack.innerHTML = items.join("") + items.join("");
 }
 
-async function loadGold() {
+function renderPrices() {
+  const madenBody = document.getElementById("madenBody");
+  const dovizBody = document.getElementById("dovizBody");
+  const sarrafiyeBody = document.getElementById("sarrafiyeBody");
 
-  try {
+  const all = Object.values(latestItems);
 
-    const response = await fetch(
-      `https://harem-altin-live-gold-price-data.p.rapidapi.com/harem_altin/prices/23b4c2fb31a242d1eebc0df9b9b65e5e?t=${Date.now()}`,
-      {
-        method: "GET",
+  const maden = madenOrder.map(name => all.find(i => i.name === name)).filter(Boolean);
+  const doviz = dovizOrder.map(name => all.find(i => i.name === name)).filter(Boolean);
+  const sarrafiye = sarrafiyeOrder.map(name => all.find(i => i.name === name)).filter(Boolean);
 
-        headers: {
-          "x-rapidapi-key": API_KEY,
-          "x-rapidapi-host":
-            "harem-altin-live-gold-price-data.p.rapidapi.com"
-        }
-      }
-    );
+  if (madenBody) madenBody.innerHTML = maden.map(createRow).join("");
+  if (dovizBody) dovizBody.innerHTML = doviz.map(createRow).join("");
+  if (sarrafiyeBody) sarrafiyeBody.innerHTML = sarrafiye.map(createRow).join("");
 
-    const result = await response.json();
-
-    const madenBody =
-      document.getElementById("madenBody");
-
-    const sarrafiyeBody =
-      document.getElementById("sarrafiyeBody");
-
-    if (
-      !madenBody ||
-      !sarrafiyeBody ||
-      !Array.isArray(result.data)
-    ) {
-      return;
-    }
-
-    const madenItems = [];
-    const sarrafiyeItems = [];
-
-    result.data.forEach(item => {
-
-      if (
-        getCategory(item.key) === "sarrafiye"
-      ) {
-        sarrafiyeItems.push(item);
-      }
-
-      else {
-        madenItems.push(item);
-      }
-    });
-
-    madenItems.sort((a, b) =>
-      getOrderIndex(a.key, madenOrder) -
-      getOrderIndex(b.key, madenOrder)
-    );
-
-    sarrafiyeItems.sort((a, b) =>
-      getOrderIndex(a.key, sarrafiyeOrder) -
-      getOrderIndex(b.key, sarrafiyeOrder)
-    );
-
-    madenBody.innerHTML =
-      madenItems.map(createGoldRow).join("");
-
-    sarrafiyeBody.innerHTML =
-      sarrafiyeItems.map(createGoldRow).join("");
-
-    updateTicker();
-
-  }
-
-  catch (err) {
-    console.log("Gold Error:", err);
-  }
+  updateTicker();
 }
 
-async function loadDoviz() {
+function normalizeItem(item) {
+  const symbol = item.symbol || item.code || item.key || item.name;
+  if (!symbol) return null;
 
-  try {
+  const buy = item.bid ?? item.buy ?? item.alis ?? item.alış;
+  const sell = item.ask ?? item.sell ?? item.satis ?? item.satış;
 
-    const response = await fetch(
-      `https://altinapi-turkish-live-gold-prices1.p.rapidapi.com/prices/category/DOVIZ?t=${Date.now()}`,
-      {
-        method: "GET",
+  if (buy === undefined || sell === undefined) return null;
 
-        headers: {
-          "Content-Type": "application/json",
-          "x-rapidapi-key": API_KEY,
-          "x-rapidapi-host":
-            "altinapi-turkish-live-gold-prices1.p.rapidapi.com"
-        }
-      }
-    );
+  const name = nameMap[symbol] || symbol;
 
-    const result = await response.json();
+  let type = null;
 
-    const dovizBody =
-      document.getElementById("dovizBody");
+  if (madenOrder.includes(name)) type = "maden";
+  else if (dovizOrder.includes(name)) type = "doviz";
+  else if (sarrafiyeOrder.includes(name)) type = "sarrafiye";
+  else return null;
 
-    if (
-      !dovizBody ||
-      !Array.isArray(result.data)
-    ) {
-      return;
-    }
+  return { symbol, name, buy, sell, type };
+}
 
-    const rows = result.data
-      .map(item => {
+function handleLiveData(data) {
+  const list = Array.isArray(data) ? data : data?.data || data?.prices || [];
 
-        const code = cleanName(
-          item.symbol || item.kod || ""
-        );
+  list.forEach(raw => {
+    const item = normalizeItem(raw);
+    if (!item) return;
+    latestItems[item.symbol] = item;
+  });
 
-        const buy = Number(
-          item.bid ?? item.alis
-        );
-
-        const sell = Number(
-          item.ask ?? item.satis
-        );
-
-        return {
-          code,
-          buy,
-          sell
-        };
-      })
-
-      .filter(item =>
-        dovizOrder.includes(item.code)
-      )
-
-      .sort((a, b) =>
-        dovizOrder.indexOf(a.code) -
-        dovizOrder.indexOf(b.code)
-      );
-
-    rows.forEach(item => {
-      tickerData[item.code] = item.sell;
-    });
-
-    dovizBody.innerHTML = rows.map(item => {
-
-      const percent =
-        getPercent(item.code, item.sell);
-
-      oldPrices[item.code] = {
-        buy: item.buy,
-        sell: item.sell
-      };
-
-      return `
-        <tr>
-          <td>
-            ${createNameCell(item.code, percent)}
-          </td>
-
-          <td>
-            ${formatNumber(item.buy)}
-          </td>
-
-          <td>
-            ${formatNumber(item.sell)}
-          </td>
-        </tr>
-      `;
-    }).join("");
-
-    updateTicker();
-
-  }
-
-  catch (err) {
-    console.log("Döviz Error:", err);
-  }
+  renderPrices();
 }
 
 function toggleMenu() {
-
-  const menu =
-    document.getElementById("mobileMenu");
-
-  if (menu) {
-    menu.classList.toggle("show");
-  }
+  const menu = document.getElementById("mobileMenu");
+  if (menu) menu.classList.toggle("show");
 }
 
 function openFullScreen() {
-
   const elem = document.documentElement;
-
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
-  }
-
-  else if (elem.webkitRequestFullscreen) {
-    elem.webkitRequestFullscreen();
-  }
-
-  else if (elem.msRequestFullscreen) {
-    elem.msRequestFullscreen();
-  }
+  if (elem.requestFullscreen) elem.requestFullscreen();
+  else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
+  else if (elem.msRequestFullscreen) elem.msRequestFullscreen();
 }
 
-document.addEventListener(
-  "DOMContentLoaded",
-  async () => {
+document.addEventListener("DOMContentLoaded", () => {
+  updateClock();
+  updateDate();
 
-    updateClock();
-    updateDate();
+  setInterval(updateClock, 1000);
+  setInterval(updateDate, 60000);
 
-    await loadGold();
-    await loadDoviz();
+  const socket = io("https://altinapi.com", {
+    transports: ["websocket"],
+    auth: {
+      api_key: ALTINAPI_KEY
+    }
+  });
 
-    setInterval(updateClock, 1000);
-    setInterval(updateDate, 60000);
+  socket.on("connect", () => {
+    console.log("ALTINAPI CONNECTED");
+    socket.emit("subscribe", symbols);
+  });
 
-    // تحديث الأسعار كل ثانية
-    setInterval(loadGold, 1000);
-    setInterval(loadDoviz, 1000);
+  socket.on("prices:snapshot", data => {
+    console.log("SNAPSHOT", data);
+    handleLiveData(data);
+  });
 
-    setTimeout(() => {
+  socket.on("prices:update", data => {
+    console.log("UPDATE", data);
+    handleLiveData(data);
+  });
 
-      const loader =
-        document.getElementById("loader");
+  socket.on("connect_error", err => {
+    console.log("SOCKET ERROR", err.message);
+  });
 
-      if (loader) {
-        loader.style.display = "none";
-      }
+  socket.on("disconnect", () => {
+    console.log("SOCKET DISCONNECTED");
+  });
 
-    }, 1200);
-  }
-);
+  setTimeout(() => {
+    const loader = document.getElementById("loader");
+    if (loader) loader.style.display = "none";
+  }, 900);
+});
