@@ -179,15 +179,12 @@ function createRow(item) {
 
 function updateTicker() {
   const tickerTrack = document.getElementById("tickerTrack");
-
   if (!tickerTrack) return;
 
   const items = [];
 
   tickerOrder.forEach(name => {
-
     const price = tickerData[name];
-
     if (!Number.isFinite(price)) return;
 
     items.push(`
@@ -195,13 +192,14 @@ function updateTicker() {
         <div class="ticker-left">
           <strong>${name}</strong>
         </div>
-
         <span class="ticker-price">
           ${formatNumber(price)}
         </span>
       </div>
     `);
   });
+
+  if (items.length === 0) return;
 
   tickerTrack.innerHTML = items.join("") + items.join("");
 }
