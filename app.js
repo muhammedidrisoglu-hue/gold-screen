@@ -23,39 +23,75 @@ function updateDate() {
 }
 
 const symbols = [
-  "ALTIN","XAUUSD","PARUSD","PAREUR","GUMUSD","XAGUSD","XAUXAG",
-  "CEYREK_YENI","CEYREK_ESKI","YARIM_YENI","YARIM_ESKI",
-  "TEK_YENI","TEK_ESKI","ATA_YENI","ATA_ESKI",
-  "GREMESE_YENI","GREMESE_ESKI","ATA5_YENI","ATA5_ESKI",
-  "USDTRY","EURTRY","EURUSD","GBPTRY","CHFTRY","AUDTRY","CADTRY","SARTRY","JPYTRY"
+  "ALTIN", "XAUUSD", "PARUSD", "PAREUR", "GUMUSD", "XAGUSD", "XAUXAG",
+  "CEYREK_YENI", "CEYREK_ESKI",
+  "YARIM_YENI", "YARIM_ESKI",
+  "TEK_YENI", "TEK_ESKI",
+  "ATA_YENI", "ATA_ESKI",
+  "GREMESE_YENI", "GREMESE_ESKI",
+  "ATA5_YENI", "ATA5_ESKI",
+  "USDTRY", "EURTRY", "EURUSD", "GBPTRY", "CHFTRY",
+  "AUDTRY", "CADTRY", "SARTRY", "JPYTRY"
 ];
 
 const nameMap = {
-  ALTIN:"HAS ALTIN",
-  XAUUSD:"ALTIN ONS",
-  PARUSD:"USD/KG",
-  PAREUR:"EUR/KG",
-  GUMUSD:"GÜMÜŞ USD",
-  XAGUSD:"GÜMÜŞ ONS",
-  XAUXAG:"ALTIN GÜMÜŞ",
-  CEYREK_YENI:"YENİ ÇEYREK",
-  CEYREK_ESKI:"ESKİ ÇEYREK",
-  YARIM_YENI:"YENİ YARIM",
-  YARIM_ESKI:"ESKİ YARIM",
-  TEK_YENI:"YENİ TAM",
-  TEK_ESKI:"ESKİ TAM",
-  ATA_YENI:"YENİ ATA",
-  ATA_ESKI:"ESKİ ATA",
-  GREMESE_YENI:"YENİ GREMSE",
-  GREMESE_ESKI:"ESKİ GREMSE",
-  ATA5_YENI:"YENİ ATA5",
-  ATA5_ESKI:"ESKİ ATA5"
+  ALTIN: "HAS ALTIN",
+  XAUUSD: "ALTIN ONS",
+  PARUSD: "USD/KG",
+  PAREUR: "EUR/KG",
+  GUMUSD: "GÜMÜŞ USD",
+  XAGUSD: "GÜMÜŞ ONS",
+  XAUXAG: "ALTIN GÜMÜŞ",
+
+  CEYREK_YENI: "YENİ ÇEYREK",
+  CEYREK_ESKI: "ESKİ ÇEYREK",
+  YARIM_YENI: "YENİ YARIM",
+  YARIM_ESKI: "ESKİ YARIM",
+  TEK_YENI: "YENİ TAM",
+  TEK_ESKI: "ESKİ TAM",
+  ATA_YENI: "YENİ ATA",
+  ATA_ESKI: "ESKİ ATA",
+  GREMESE_YENI: "YENİ GREMSE",
+  GREMESE_ESKI: "ESKİ GREMSE",
+  ATA5_YENI: "YENİ ATA5",
+  ATA5_ESKI: "ESKİ ATA5"
 };
 
-const madenOrder = ["HAS ALTIN","ALTIN ONS","USD/KG","EUR/KG","GÜMÜŞ USD","GÜMÜŞ ONS","ALTIN GÜMÜŞ"];
-const dovizOrder = ["USDTRY","EURTRY","EURUSD","GBPTRY","CHFTRY","AUDTRY","CADTRY","SARTRY","JPYTRY"];
-const sarrafiyeOrder = ["YENİ ÇEYREK","ESKİ ÇEYREK","YENİ YARIM","ESKİ YARIM","YENİ TAM","ESKİ TAM","YENİ ATA","ESKİ ATA","YENİ GREMSE","ESKİ GREMSE","YENİ ATA5","ESKİ ATA5"];
-const tickerOrder = ["HAS ALTIN","ALTIN ONS","GÜMÜŞ ONS","GÜMÜŞ USD","USDTRY","EURTRY","YENİ ÇEYREK","YENİ YARIM","YENİ TAM"];
+const madenOrder = [
+  "HAS ALTIN",
+  "ALTIN ONS",
+  "USD/KG",
+  "EUR/KG",
+  "GÜMÜŞ USD",
+  "GÜMÜŞ ONS",
+  "ALTIN GÜMÜŞ"
+];
+
+const dovizOrder = [
+  "USDTRY", "EURTRY", "EURUSD", "GBPTRY", "CHFTRY",
+  "AUDTRY", "CADTRY", "SARTRY", "JPYTRY"
+];
+
+const sarrafiyeOrder = [
+  "YENİ ÇEYREK", "ESKİ ÇEYREK",
+  "YENİ YARIM", "ESKİ YARIM",
+  "YENİ TAM", "ESKİ TAM",
+  "YENİ ATA", "ESKİ ATA",
+  "YENİ GREMSE", "ESKİ GREMSE",
+  "YENİ ATA5", "ESKİ ATA5"
+];
+
+const tickerOrder = [
+  "HAS ALTIN",
+  "ALTIN ONS",
+  "GÜMÜŞ ONS",
+  "GÜMÜŞ USD",
+  "USDTRY",
+  "EURTRY",
+  "YENİ ÇEYREK",
+  "YENİ YARIM",
+  "YENİ TAM"
+];
 
 function parsePrice(value) {
   if (typeof value === "number") return value;
@@ -65,6 +101,7 @@ function parsePrice(value) {
 function formatNumber(value) {
   const n = Number(value);
   if (!Number.isFinite(n)) return "";
+
   return new Intl.NumberFormat("tr-TR", {
     minimumFractionDigits: 0,
     maximumFractionDigits: 3
@@ -79,8 +116,15 @@ function getPercent(key, newValue) {
 
 function createNameCell(name, percent) {
   const up = percent >= 0;
+
   return `
-    <div style="display:flex;align-items:center;justify-content:space-between;width:100%;gap:8px;">
+    <div style="
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      width:100%;
+      gap:8px;
+    ">
       <span class="price-name">${name}</span>
       <span class="price-rate ${up ? "up" : "down"}">
         ${up ? "▲" : "▼"} %${Math.abs(percent).toFixed(2)}
@@ -183,7 +227,11 @@ function normalizeItem(item) {
 
   const name = nameMap[symbol] || symbol;
 
-  if (!madenOrder.includes(name) && !dovizOrder.includes(name) && !sarrafiyeOrder.includes(name)) {
+  if (
+    !madenOrder.includes(name) &&
+    !dovizOrder.includes(name) &&
+    !sarrafiyeOrder.includes(name)
+  ) {
     return null;
   }
 
@@ -191,7 +239,14 @@ function normalizeItem(item) {
 }
 
 function handleLiveData(data) {
-  const list = Array.isArray(data) ? data : data?.data || data?.prices || [];
+  const list =
+    Array.isArray(data)
+      ? data
+      : Array.isArray(data?.data)
+        ? data.data
+        : Array.isArray(data?.prices)
+          ? data.prices
+          : [];
 
   list.forEach(raw => {
     const item = normalizeItem(raw);
