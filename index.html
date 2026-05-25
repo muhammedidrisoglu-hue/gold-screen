@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <link rel="apple-touch-icon" href="logo.png">
-<link rel="apple-touch-icon" sizes="180x180" href="logo.png">
-<meta name="apple-mobile-web-app-title" content="HAC IDRIS GOLD">
-<meta name="apple-mobile-web-app-capable" content="yes">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>hacidrisgold</title>
-<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png?v=2">
-<link rel="icon" type="image/png" href="./apple-touch-icon.png?v=2">
+
+  <meta name="apple-mobile-web-app-title" content="HAC IDRIS GOLD">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png?v=2">
+  <link rel="icon" type="image/png" href="./apple-touch-icon.png?v=2">
+
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -24,6 +26,7 @@
   <button id="fullscreenBtn" onclick="openFullScreen()">⛶</button>
 
   <div class="nav-header">
+
     <a href="/" class="logo-link">
       <img src="logo.png" class="nav-logo" alt="HAC IDRIS GOLD">
     </a>
@@ -34,38 +37,65 @@
       <a href="/" class="active">Ana Sayfa</a>
       <a href="/iletisim.html">İletişim</a>
     </div>
+
   </div>
 
   <div class="sections">
 
     <div class="price-section">
+
       <h2>Maden</h2>
+
       <table>
         <thead>
-          <tr><th></th><th>Alış</th><th>Satış</th></tr>
+          <tr>
+            <th></th>
+            <th></th>
+            <th>Alış</th>
+            <th>Satış</th>
         </thead>
+
         <tbody id="madenBody"></tbody>
       </table>
+
     </div>
 
     <div class="price-section">
+
       <h2>Döviz</h2>
+
       <table>
         <thead>
-          <tr><th></th><th>Alış</th><th>Satış</th></tr>
+          <tr>
+            <th></th>
+            <th></th>
+            <th>Alış</th>
+            <th>Satış</th>
+          </tr>
         </thead>
+
         <tbody id="dovizBody"></tbody>
       </table>
+
     </div>
 
     <div class="price-section">
+
       <h2>Sarrafiye</h2>
+
       <table>
         <thead>
-          <tr><th></th><th>Alış</th><th>Satış</th></tr>
+          <tr>
+            <th></th>
+            <th></th>
+            <th>Alış</th>
+            <th>Satış</th>
+          </tr>
         </thead>
+
         <tbody id="sarrafiyeBody"></tbody>
       </table>
+
     </div>
 
   </div>
@@ -74,7 +104,9 @@
     <div class="ticker-track" id="tickerTrack"></div>
   </div>
 
-<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-<script src="./app.js?v=3000"></script>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+  <script src="./app.js?v=3001"></script>
+
 </body>
 </html>

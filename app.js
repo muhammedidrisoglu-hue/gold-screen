@@ -140,6 +140,24 @@ function createRow(item) {
   const buy = parsePrice(item.buy);
   const sell = parsePrice(item.sell);
 
+  let percent = 0;
+  let arrow = "▲";
+  let trendClass = "up";
+
+  if (oldPrices[item.name]) {
+    const oldSell = oldPrices[item.name].sell;
+
+    if (Number.isFinite(oldSell) && oldSell !== 0) {
+      percent = ((sell - oldSell) / oldSell) * 100;
+    }
+
+    if (sell < oldSell) {
+      arrow = "▼";
+      trendClass = "down";
+    }
+  }
+
+  oldPrices[item.name] = { buy, sell };
   tickerData[item.name] = sell;
 
   return `
@@ -148,8 +166,12 @@ function createRow(item) {
         <span class="price-name">${item.name}</span>
       </td>
 
-      <td>${formatNumber(buy)}</td>
+      <td class="percent-cell ${trendClass}">
+        <span>%${Math.abs(percent).toFixed(2)}</span>
+        <span class="arrow">${arrow}</span>
+      </td>
 
+      <td>${formatNumber(buy)}</td>
       <td>${formatNumber(sell)}</td>
     </tr>
   `;
