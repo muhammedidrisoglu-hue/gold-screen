@@ -10,7 +10,7 @@ body{
 }
 
 .nav-header{
-  height:86px;
+  height:100px;
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -22,10 +22,14 @@ body{
   z-index:9999;
 }
 
-.logo-link{display:flex;align-items:center}
+.logo-link{
+  display:flex;
+  align-items:center;
+  margin-left:50px;
+}
 
 .nav-logo{
-  width:300px;
+  width:390px;
   height:auto;
   display:block;
   object-fit:contain;
@@ -40,9 +44,9 @@ body{
 .nav-links a{
   text-decoration:none;
   color:#555;
-  font-size:15px;
+  font-size:18px;
   font-weight:600;
-  padding:11px 28px;
+  padding:14px 32px;
   border-radius:999px;
   background:#f4f4f4;
 }
@@ -61,31 +65,36 @@ body{
 .sections{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:18px;
-  padding:30px;
+  gap:20px;
+  padding:70px;
+  margin-top:-20px;
 }
 
 .price-section{
   background:#fff;
   border-radius:18px;
-  padding:15px;
+  padding:10px 15px 15px;
   height:calc(100vh - 180px);
   overflow-y:auto;
   box-shadow:0 5px 18px rgba(0,0,0,.055);
 }
 
 .price-section::-webkit-scrollbar{width:6px}
+
 .price-section::-webkit-scrollbar-thumb{
   background:#d8d8d8;
   border-radius:20px;
 }
 
 .price-section h2{
-  margin:0 0 10px;
+  position:relative;
+  top:12px;
+  margin:0;
+  padding-left:25px;
   color:#f0c550;
   font-size:25px;
-  font-weight:300;
-  letter-spacing:.3px;
+  font-weight:600;
+  line-height:1;
 }
 
 table{
@@ -93,13 +102,14 @@ table{
   table-layout:fixed;
   border-collapse:separate;
   border-spacing:0 10px;
+  margin-top:-6px;
 }
 
 th{
   color:#f0c550;
   font-size:20px;
-  font-weight:300;
-  padding:0 10px 0;
+  font-weight:600;
+  padding:0 10px;
   text-align:center;
   vertical-align:top;
 }
@@ -111,6 +121,8 @@ thead tr{
 thead th{
   padding-top:1px;
   padding-bottom:10px;
+  position:relative;
+  top:-12px;
 }
 
 th:first-child,
@@ -136,7 +148,7 @@ td:nth-child(4){
 td{
   background:#fafafa;
   padding:18px 16px;
-  font-size:22px;
+  font-size:21px;
   font-weight:600;
   vertical-align:middle;
   border-top:1px solid #f0f0f0;
@@ -155,7 +167,7 @@ td:last-child{
 
 .price-name{
   display:block;
-  font-size:20px;
+  font-size:21px;
   font-weight:700;
   color:#333;
   line-height:1.15;
@@ -171,6 +183,7 @@ td:last-child{
   text-align:center;
   padding-left:2px;
   padding-right:2px;
+  font-variant-numeric:tabular-nums;
 }
 
 .percent-cell .arrow{
@@ -239,7 +252,8 @@ td:last-child{
   text-align:right;
 }
 
-.ticker-up,.ticker-down{
+.ticker-up,
+.ticker-down{
   font-size:10px;
   font-weight:700;
 }
@@ -305,7 +319,9 @@ td:last-child{
   box-shadow:0 5px 18px rgba(0,0,0,.055);
 }
 
-.contact-page h1{color:#f0c550}
+.contact-page h1{
+  color:#f0c550;
+}
 
 @media screen and (max-width:1100px){
   .sections{
@@ -318,15 +334,21 @@ td:last-child{
 }
 
 @media screen and (max-width:768px){
-  body{padding-bottom:0}
+  body{
+    padding-bottom:0;
+  }
 
   .nav-header{
-    height:78px;
+    height:100px;
     padding:0 14px;
   }
 
+  .logo-link{
+    margin-left:0;
+  }
+
   .nav-logo{
-    width:220px;
+    width:270px;
     height:auto;
     display:block;
     object-fit:contain;
@@ -341,7 +363,7 @@ td:last-child{
   .nav-links{
     display:none;
     position:absolute;
-    top:78px;
+    top:100px;
     right:14px;
     background:#fff;
     flex-direction:column;
@@ -350,11 +372,14 @@ td:last-child{
     box-shadow:0 4px 18px rgba(0,0,0,.12);
   }
 
-  .nav-links.show{display:flex}
+  .nav-links.show{
+    display:flex;
+  }
 
   .sections{
     grid-template-columns:1fr;
     padding:12px;
+    margin-top:0;
   }
 
   .price-section{
@@ -371,41 +396,17 @@ td:last-child{
     font-size:15px;
   }
 
-.percent-cell{
-  font-size:11px;
-  font-weight:700;
-  white-space:nowrap;
-  text-align:center;
-  padding-left:2px;
-  padding-right:2px;
-  font-variant-numeric: tabular-nums;
-}
+  .percent-cell{
+    font-size:11px;
+  }
 
   .percent-cell .arrow{
     font-size:9px;
     margin-left:3px;
   }
 
-  .ticker-bar{display:none}
-  #fullscreenBtn{display:none}
-}
-.price-section{
-  padding-top:10px!important;
-}
-
-.price-section h2{
-  margin:0 0 0!important;
-  line-height:1!important;
-}
-
-thead th{
-  padding-top:0!important;
-  padding-bottom:0!important;
-  line-height:1!important;
-  height:0!important;
-  transform:translateY(-2px);
-}
-
-table{
-  margin-top:-6px!important;
+  .ticker-bar,
+  #fullscreenBtn{
+    display:none;
+  }
 }
