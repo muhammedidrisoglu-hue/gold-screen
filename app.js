@@ -199,9 +199,9 @@ function updateTicker() {
     `);
   });
 
-  if (items.length === 0) return;
+if(items.length === 0) return;
 
-  tickerTrack.innerHTML = items.join("") + items.join("");
+tickerTrack.innerHTML = items.join("") + items.join("");
 }
 
 function renderPrices() {

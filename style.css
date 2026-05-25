@@ -214,12 +214,14 @@ td:last-child{
 .ticker-track{
   display:flex;
   width:max-content;
-  animation:tickerMove 35s linear infinite;
+  animation:tickerMove 65s linear infinite;
   will-change:transform;
+  transform:translateZ(0);
+  backface-visibility:hidden;
 }
 
 .ticker-item{
-  width:300px;
+  width:250px;
   height:72px;
   padding:0 18px;
   display:flex;
