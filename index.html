@@ -7,8 +7,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HAC IDRIS GOLD</title>
+  <title>hacidrisgold</title>
   <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="logo.png">
+
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -22,57 +24,57 @@
 
   <button id="fullscreenBtn" onclick="openFullScreen()">⛶</button>
 
-  <header class="nav-header">
+  <div class="nav-header">
     <a href="/" class="logo-link">
       <img src="logo.png" class="nav-logo" alt="HAC IDRIS GOLD">
     </a>
 
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    <div class="menu-btn" onclick="toggleMenu()">☰</div>
 
-    <nav class="nav-links" id="mobileMenu">
+    <div class="nav-links" id="mobileMenu">
       <a href="/" class="active">Ana Sayfa</a>
       <a href="/iletisim.html">İletişim</a>
-    </nav>
-  </header>
+    </div>
+  </div>
 
-  <main class="sections">
+  <div class="sections">
 
-  <section class="price-section">
-    <h2>Maden</h2>
-    <table>
-      <thead>
-        <tr><th></th><th>Alış</th><th>Satış</th></tr>
-      </thead>
-      <tbody id="madenBody"></tbody>
-    </table>
-  </section>
+    <div class="price-section">
+      <h2>Maden</h2>
+      <table>
+        <thead>
+          <tr><th></th><th>Alış</th><th>Satış</th></tr>
+        </thead>
+        <tbody id="madenBody"></tbody>
+      </table>
+    </div>
 
-  <section class="price-section">
-    <h2>Döviz</h2>
-    <table>
-      <thead>
-        <tr><th></th><th>Alış</th><th>Satış</th></tr>
-      </thead>
-      <tbody id="dovizBody"></tbody>
-    </table>
-  </section>
+    <div class="price-section">
+      <h2>Döviz</h2>
+      <table>
+        <thead>
+          <tr><th></th><th>Alış</th><th>Satış</th></tr>
+        </thead>
+        <tbody id="dovizBody"></tbody>
+      </table>
+    </div>
 
-  <section class="price-section">
-    <h2>Sarrafiye</h2>
-    <table>
-      <thead>
-        <tr><th></th><th>Alış</th><th>Satış</th></tr>
-      </thead>
-      <tbody id="sarrafiyeBody"></tbody>
-    </table>
-  </section>
+    <div class="price-section">
+      <h2>Sarrafiye</h2>
+      <table>
+        <thead>
+          <tr><th></th><th>Alış</th><th>Satış</th></tr>
+        </thead>
+        <tbody id="sarrafiyeBody"></tbody>
+      </table>
+    </div>
 
-</main>
+  </div>
+
   <div class="ticker-bar">
     <div class="ticker-track" id="tickerTrack"></div>
   </div>
 
-<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-<script src="./uygulama.js?v=500"></script>
+  <script src="app.js"></script>
 </body>
 </html>
