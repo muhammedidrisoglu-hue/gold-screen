@@ -4,40 +4,78 @@ function updateClock() {
   const minutes = String(now.getMinutes()).padStart(2, "0");
 
   const clockElement = document.getElementById("clock");
-  if (clockElement) clockElement.innerText = `${hours}:${minutes}`;
+
+  if (clockElement) {
+    clockElement.innerText = `${hours}:${minutes}`;
+  }
 }
 
 function updateDate() {
   const today = new Date();
+
   const day = String(today.getDate()).padStart(2, "0");
   const month = String(today.getMonth() + 1).padStart(2, "0");
   const year = today.getFullYear();
 
   const dateElement = document.getElementById("date");
-  if (dateElement) dateElement.innerText = `${day}/${month}/${year}`;
+
+  if (dateElement) {
+    dateElement.innerText = `${day}/${month}/${year}`;
+  }
 }
 
 let oldPrices = {};
 let oldTickerPrices = {};
 let tickerData = {};
 
+const API_KEY =
+  "a1692331famsh5bbb25822034d5bp180102jsn1334712f8d03";
+
 const madenOrder = [
-  "HAS ALTIN", "HAS ALTIN ÇEKİLİ", "ALTIN ONS", "USD KG",
-  "ALTIN USDKG", "EUR KG", "ALTIN EURKG", "GÜMÜŞ ONS",
-  "GÜMÜŞ TL", "GÜMÜŞ USD", "GÜMÜŞ EUR", "ALTIN GÜMÜŞ",
-  "PLATIN ONS", "PALADYUM ONS", "14 AYAR", "22 AYAR"
+  "HAS ALTIN",
+  "HAS ALTIN ÇEKİLİ",
+  "ALTIN ONS",
+  "USD KG",
+  "ALTIN USDKG",
+  "EUR KG",
+  "ALTIN EURKG",
+  "GÜMÜŞ ONS",
+  "GÜMÜŞ TL",
+  "GÜMÜŞ USD",
+  "GÜMÜŞ EUR",
+  "ALTIN GÜMÜŞ",
+  "PLATIN ONS",
+  "PALADYUM ONS",
+  "14 AYAR",
+  "22 AYAR"
 ];
 
 const sarrafiyeOrder = [
-  "YENİ ÇEYREK", "ESKİ ÇEYREK", "YENİ YARIM", "ESKİ YARIM",
-  "YENİ TAM", "ESKİ TAM", "YENİ ATA", "ESKİ ATA",
-  "YENİ GREMSE", "ESKİ GREMSE", "YENİ ATA5", "ESKİ ATA5",
+  "YENİ ÇEYREK",
+  "ESKİ ÇEYREK",
+  "YENİ YARIM",
+  "ESKİ YARIM",
+  "YENİ TAM",
+  "ESKİ TAM",
+  "YENİ ATA",
+  "ESKİ ATA",
+  "YENİ GREMSE",
+  "ESKİ GREMSE",
+  "YENİ ATA5",
+  "ESKİ ATA5",
   "GRAM ALTIN"
 ];
 
 const dovizOrder = [
-  "USDTRY", "EURTRY", "EURUSD", "GBPTRY", "CHFTRY",
-  "AUDTRY", "CADTRY", "SARTRY", "JPYTRY"
+  "USDTRY",
+  "EURTRY",
+  "EURUSD",
+  "GBPTRY",
+  "CHFTRY",
+  "AUDTRY",
+  "CADTRY",
+  "SARTRY",
+  "JPYTRY"
 ];
 
 const tickerOrder = [
@@ -67,7 +105,12 @@ function getOrderIndex(itemName, orderList) {
 
   const index = orderList.findIndex(orderName => {
     const order = cleanName(orderName);
-    return item === order || item.includes(order) || order.includes(item);
+
+    return (
+      item === order ||
+      item.includes(order) ||
+      order.includes(item)
+    );
   });
 
   return index === -1 ? 999 : index;
@@ -90,18 +133,21 @@ function getCategory(itemName) {
 }
 
 function parsePrice(value) {
-  return parseFloat(String(value).replace(".", "").replace(",", "."));
+  if (typeof value === "number") return value;
+
+  return parseFloat(
+    String(value)
+      .replace(/\./g, "")
+      .replace(",", ".")
+  );
 }
 
 function formatNumber(value) {
   const number = Number(value);
-  if (!Number.isFinite(number)) return "";
-  return number.toFixed(3);
-}
 
-function formatTickerNumber(value) {
-  const number = Number(value);
-  if (!Number.isFinite(number)) return "";
+  if (!Number.isFinite(number)) {
+    return "";
+  }
 
   return new Intl.NumberFormat("tr-TR", {
     minimumFractionDigits: 0,
@@ -111,19 +157,28 @@ function formatTickerNumber(value) {
 
 function getPercent(key, newValue) {
   const old = oldPrices[key]?.sell;
-  if (!Number.isFinite(old) || old === 0) return 0;
+
+  if (!Number.isFinite(old) || old === 0) {
+    return 0;
+  }
+
   return ((newValue - old) / old) * 100;
 }
 
 function createNameCell(name, percent) {
   const isUp = percent >= 0;
+
   const cls = isUp ? "up" : "down";
-  const arrow = isUp ? "↑" : "↓";
+
+  const arrow = isUp ? "▲" : "▼";
 
   return `
-    <span class="price-name">${name}</span>
-    <span class="price-desc"></span>
-    <span class="price-rate ${cls}">${arrow} %${Math.abs(percent).toFixed(2)}</span>
+    <div class="name-wrap">
+      <span class="price-name">${name}</span>
+      <span class="price-rate ${cls}">
+        ${arrow} %${Math.abs(percent).toFixed(2)}
+      </span>
+    </div>
   `;
 }
 
@@ -133,17 +188,29 @@ function createGoldRow(item) {
 
   const buyNumber = parsePrice(buy);
   const sellNumber = parsePrice(sell);
+
   const percent = getPercent(item.key, sellNumber);
 
   let buyClass = "";
   let sellClass = "";
 
   if (oldPrices[item.key]) {
-    if (buyNumber > oldPrices[item.key].buy) buyClass = "up";
-    else if (buyNumber < oldPrices[item.key].buy) buyClass = "down";
 
-    if (sellNumber > oldPrices[item.key].sell) sellClass = "up";
-    else if (sellNumber < oldPrices[item.key].sell) sellClass = "down";
+    if (buyNumber > oldPrices[item.key].buy) {
+      buyClass = "up";
+    }
+
+    else if (buyNumber < oldPrices[item.key].buy) {
+      buyClass = "down";
+    }
+
+    if (sellNumber > oldPrices[item.key].sell) {
+      sellClass = "up";
+    }
+
+    else if (sellNumber < oldPrices[item.key].sell) {
+      sellClass = "down";
+    }
   }
 
   oldPrices[item.key] = {
@@ -155,33 +222,53 @@ function createGoldRow(item) {
 
   return `
     <tr>
-      <td>${createNameCell(item.key, percent)}</td>
-      <td class="${buyClass}">${buy}</td>
-      <td class="${sellClass}">${sell}</td>
+      <td>
+        ${createNameCell(item.key, percent)}
+      </td>
+
+      <td class="${buyClass}">
+        ${formatNumber(buyNumber)}
+      </td>
+
+      <td class="${sellClass}">
+        ${formatNumber(sellNumber)}
+      </td>
     </tr>
   `;
 }
 
 function updateTicker() {
-  const tickerTrack = document.getElementById("tickerTrack");
+
+  const tickerTrack =
+    document.getElementById("tickerTrack");
+
   if (!tickerTrack) return;
 
   const items = [];
 
   tickerOrder.forEach(name => {
+
     const cleanTarget = cleanName(name);
 
     const realKey = Object.keys(tickerData).find(key => {
+
       const cleanKey = cleanName(key);
-      return cleanKey === cleanTarget || cleanKey.includes(cleanTarget) || cleanTarget.includes(cleanKey);
+
+      return (
+        cleanKey === cleanTarget ||
+        cleanKey.includes(cleanTarget) ||
+        cleanTarget.includes(cleanKey)
+      );
     });
 
     if (!realKey) return;
 
     const price = tickerData[realKey];
+
     if (!Number.isFinite(price)) return;
 
     const old = oldTickerPrices[realKey];
+
     let percent = 0;
 
     if (Number.isFinite(old) && old !== 0) {
@@ -189,113 +276,176 @@ function updateTicker() {
     }
 
     const isUp = percent >= 0;
-    const arrow = isUp ? "↑" : "↓";
-    const cls = isUp ? "ticker-up" : "ticker-down";
+
+    const arrow = isUp ? "▲" : "▼";
+
+    const cls =
+      isUp ? "ticker-up" : "ticker-down";
 
     items.push(`
       <div class="ticker-item">
         <strong>${name}</strong>
-        <span class="ticker-price">${formatTickerNumber(price)}</span>
-        <span class="${cls}">${arrow} %${Math.abs(percent).toFixed(2)}</span>
+
+        <span class="ticker-price">
+          ${formatNumber(price)}
+        </span>
+
+        <span class="${cls}">
+          ${arrow} %${Math.abs(percent).toFixed(2)}
+        </span>
       </div>
     `);
 
     oldTickerPrices[realKey] = price;
   });
 
-  if (items.length > 0) {
-    tickerTrack.innerHTML = items.join("") + items.join("");
-  }
+  tickerTrack.innerHTML =
+    items.join("") + items.join("");
 }
 
 async function loadGold() {
+
   try {
+
     const response = await fetch(
-      "https://harem-altin-live-gold-price-data.p.rapidapi.com/harem_altin/prices/23b4c2fb31a242d1eebc0df9b9b65e5e",
+      `https://harem-altin-live-gold-price-data.p.rapidapi.com/harem_altin/prices/23b4c2fb31a242d1eebc0df9b9b65e5e?t=${Date.now()}`,
       {
         method: "GET",
+
         headers: {
-          "x-rapidapi-key": "a1692331famsh5bbb25822034d5bp180102jsn1334712f8d03",
-          "x-rapidapi-host": "harem-altin-live-gold-price-data.p.rapidapi.com"
+          "x-rapidapi-key": API_KEY,
+          "x-rapidapi-host":
+            "harem-altin-live-gold-price-data.p.rapidapi.com"
         }
       }
     );
 
     const result = await response.json();
 
-    const madenBody = document.getElementById("madenBody");
-    const sarrafiyeBody = document.getElementById("sarrafiyeBody");
+    const madenBody =
+      document.getElementById("madenBody");
 
-    if (!madenBody || !sarrafiyeBody || !Array.isArray(result.data)) return;
+    const sarrafiyeBody =
+      document.getElementById("sarrafiyeBody");
+
+    if (
+      !madenBody ||
+      !sarrafiyeBody ||
+      !Array.isArray(result.data)
+    ) {
+      return;
+    }
 
     const madenItems = [];
     const sarrafiyeItems = [];
 
     result.data.forEach(item => {
-      if (getCategory(item.key) === "sarrafiye") {
+
+      if (
+        getCategory(item.key) === "sarrafiye"
+      ) {
         sarrafiyeItems.push(item);
-      } else {
+      }
+
+      else {
         madenItems.push(item);
       }
     });
 
-    madenItems.sort((a, b) => getOrderIndex(a.key, madenOrder) - getOrderIndex(b.key, madenOrder));
-    sarrafiyeItems.sort((a, b) => getOrderIndex(a.key, sarrafiyeOrder) - getOrderIndex(b.key, sarrafiyeOrder));
+    madenItems.sort((a, b) =>
+      getOrderIndex(a.key, madenOrder) -
+      getOrderIndex(b.key, madenOrder)
+    );
 
-    madenBody.innerHTML = madenItems.map(createGoldRow).join("");
-    sarrafiyeBody.innerHTML = sarrafiyeItems.map(createGoldRow).join("");
+    sarrafiyeItems.sort((a, b) =>
+      getOrderIndex(a.key, sarrafiyeOrder) -
+      getOrderIndex(b.key, sarrafiyeOrder)
+    );
+
+    madenBody.innerHTML =
+      madenItems.map(createGoldRow).join("");
+
+    sarrafiyeBody.innerHTML =
+      sarrafiyeItems.map(createGoldRow).join("");
 
     updateTicker();
 
-  } catch (err) {
+  }
+
+  catch (err) {
     console.log("Gold Error:", err);
   }
 }
 
 async function loadDoviz() {
+
   try {
+
     const response = await fetch(
-      "https://altinapi-turkish-live-gold-prices1.p.rapidapi.com/prices/category/DOVIZ",
+      `https://altinapi-turkish-live-gold-prices1.p.rapidapi.com/prices/category/DOVIZ?t=${Date.now()}`,
       {
         method: "GET",
+
         headers: {
           "Content-Type": "application/json",
-          "x-rapidapi-key": "a1692331famsh5bbb25822034d5bp180102jsn1334712f8d03",
-          "x-rapidapi-host": "altinapi-turkish-live-gold-prices1.p.rapidapi.com"
+          "x-rapidapi-key": API_KEY,
+          "x-rapidapi-host":
+            "altinapi-turkish-live-gold-prices1.p.rapidapi.com"
         }
       }
     );
 
     const result = await response.json();
-    const dovizBody = document.getElementById("dovizBody");
 
-    if (!dovizBody || !Array.isArray(result.data)) {
-      console.log("Döviz data gelmedi:", result);
+    const dovizBody =
+      document.getElementById("dovizBody");
+
+    if (
+      !dovizBody ||
+      !Array.isArray(result.data)
+    ) {
       return;
     }
 
     const rows = result.data
       .map(item => {
-        const code = cleanName(item.symbol || item.kod || "");
-        const buy = Number(item.bid ?? item.alis);
-        const sell = Number(item.ask ?? item.satis);
 
-        return { code, buy, sell };
+        const code = cleanName(
+          item.symbol || item.kod || ""
+        );
+
+        const buy = Number(
+          item.bid ?? item.alis
+        );
+
+        const sell = Number(
+          item.ask ?? item.satis
+        );
+
+        return {
+          code,
+          buy,
+          sell
+        };
       })
-      .filter(item => dovizOrder.includes(item.code))
-      .sort((a, b) => dovizOrder.indexOf(a.code) - dovizOrder.indexOf(b.code));
 
-    if (rows.length === 0) {
-      console.log("Döviz eşleşmedi:", result.data);
-      return;
-    }
+      .filter(item =>
+        dovizOrder.includes(item.code)
+      )
+
+      .sort((a, b) =>
+        dovizOrder.indexOf(a.code) -
+        dovizOrder.indexOf(b.code)
+      );
 
     rows.forEach(item => {
       tickerData[item.code] = item.sell;
     });
 
     dovizBody.innerHTML = rows.map(item => {
-      const percent = getPercent(item.code, item.sell);
+
+      const percent =
+        getPercent(item.code, item.sell);
 
       oldPrices[item.code] = {
         buy: item.buy,
@@ -304,48 +454,83 @@ async function loadDoviz() {
 
       return `
         <tr>
-          <td>${createNameCell(item.code, percent)}</td>
-          <td>${formatNumber(item.buy)}</td>
-          <td>${formatNumber(item.sell)}</td>
+          <td>
+            ${createNameCell(item.code, percent)}
+          </td>
+
+          <td>
+            ${formatNumber(item.buy)}
+          </td>
+
+          <td>
+            ${formatNumber(item.sell)}
+          </td>
         </tr>
       `;
     }).join("");
 
     updateTicker();
 
-  } catch (err) {
+  }
+
+  catch (err) {
     console.log("Döviz Error:", err);
   }
 }
 
 function toggleMenu() {
-  const menu = document.getElementById("mobileMenu");
-  if (menu) menu.classList.toggle("show");
+
+  const menu =
+    document.getElementById("mobileMenu");
+
+  if (menu) {
+    menu.classList.toggle("show");
+  }
 }
 
 function openFullScreen() {
+
   const elem = document.documentElement;
 
-  if (elem.requestFullscreen) elem.requestFullscreen();
-  else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
-  else if (elem.msRequestFullscreen) elem.msRequestFullscreen();
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  }
+
+  else if (elem.webkitRequestFullscreen) {
+    elem.webkitRequestFullscreen();
+  }
+
+  else if (elem.msRequestFullscreen) {
+    elem.msRequestFullscreen();
+  }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(() => {
-    const loader = document.getElementById("loader");
-    if (loader) loader.style.display = "none";
-  }, 1200);
-});
+document.addEventListener(
+  "DOMContentLoaded",
+  async () => {
 
-updateClock();
-setInterval(updateClock, 1000);
+    updateClock();
+    updateDate();
 
-updateDate();
-setInterval(updateDate, 60000);
+    await loadGold();
+    await loadDoviz();
 
-loadGold();
-setInterval(loadGold, 60000);
+    setInterval(updateClock, 1000);
+    setInterval(updateDate, 60000);
 
-loadDoviz();
-setInterval(loadDoviz, 60000);
+    // تحديث الأسعار كل ثانية
+    setInterval(loadGold, 1000);
+    setInterval(loadDoviz, 1000);
+
+    setTimeout(() => {
+
+      const loader =
+        document.getElementById("loader");
+
+      if (loader) {
+        loader.style.display = "none";
+      }
+
+    }, 1200);
+  }
+);
