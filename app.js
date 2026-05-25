@@ -167,7 +167,7 @@ function createRow(item) {
       </td>
 
       <td class="percent-cell ${trendClass}">
-        <span>%${Math.abs(percent).toFixed(2)}</span>
+        <span>%${Math.abs(percent).toFixed(3)}</span>
         <span class="arrow">${arrow}</span>
       </td>
 
