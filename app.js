@@ -109,25 +109,100 @@ function formatNumber(value) {
   }).format(n);
 }
 
+function getTodayKey() {
+  const d = new Date();
+
+  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+}
+
 function getPercent(key, newValue) {
-  const old = oldPrices[key]?.sell;
-  if (!Number.isFinite(old) || old === 0) return 0;
-  return ((newValue - old) / old) * 100;
+
+  const todayKey = getTodayKey();
+
+  const savedDay =
+    localStorage.getItem("priceDay");
+
+  if (savedDay !== todayKey) {
+
+    localStorage.setItem(
+      "priceDay",
+      todayKey
+    );
+
+    localStorage.removeItem(
+      "basePrices"
+    );
+  }
+
+  const basePrices = JSON.parse(
+    localStorage.getItem("basePrices") || "{}"
+  );
+
+  if (!basePrices[key]) {
+
+    basePrices[key] = newValue;
+
+    localStorage.setItem(
+      "basePrices",
+      JSON.stringify(basePrices)
+    );
+
+    return 0;
+  }
+
+  const base = basePrices[key];
+
+  if (
+    !Number.isFinite(base) ||
+    base === 0
+  ) {
+    return 0;
+  }
+
+  return (
+    ((newValue - base) / base) * 100
+  );
 }
 
 function createNameCell(name, percent) {
+
+  if (percent === null) {
+    return `
+      <div style="
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        width:100%;
+      ">
+        <span class="price-name">
+          ${name}
+        </span>
+      </div>
+    `;
+  }
+
   const up = percent >= 0;
 
   return `
-    <div class="name-wrap">
-      <span class="price-name">${name}</span>
+    <div style="
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      width:100%;
+      gap:8px;
+    ">
+
+      <span class="price-name">
+        ${name}
+      </span>
+
       <span class="price-rate ${up ? "up" : "down"}">
         ${up ? "▲" : "▼"} %${Math.abs(percent).toFixed(2)}
       </span>
+
     </div>
   `;
 }
-
 function createRow(item) {
   const buy = parsePrice(item.buy);
   const sell = parsePrice(item.sell);
