@@ -578,3 +578,47 @@ td:last-child{
     flex-wrap: wrap;
   }
 }
+.arabic-location{
+  display:none;
+}
+
+@media screen and (max-width:768px){
+
+  .arabic-logo-link{
+    display:none!important;
+  }
+
+  .arabic-center-title{
+    display:block;
+    position:static;
+    transform:none;
+    font-size:24px;
+    font-weight:800;
+    color:#c9a227;
+    margin-left:0;
+    white-space:nowrap;
+  }
+
+  .arabic-menu-btn{
+    display:block!important;
+    font-size:32px;
+    cursor:pointer;
+    color:#333;
+    margin-right:8px;
+  }
+
+  .arabic-nav{
+    justify-content:space-between;
+  }
+
+  .arabic-location{
+    display:block;
+    position:fixed;
+    left:12px;
+    bottom:8px;
+    font-size:11px;
+    font-weight:700;
+    color:#777;
+    z-index:999999;
+  }
+}
