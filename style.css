@@ -551,3 +551,30 @@ td:last-child{
   font-size:6px!important;
   margin-left:2px!important;
 }
+.arabic-center-title{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 70px;
+  font-weight: 700;
+  color: #c9a227;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px){
+
+  .arabic-center-title{
+    position: static;
+    transform: none;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 40px;
+  }
+
+  .header,
+  .navbar,
+  .top-bar{
+    flex-wrap: wrap;
+  }
+}
