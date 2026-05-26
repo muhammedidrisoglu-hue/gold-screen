@@ -187,7 +187,7 @@ td:last-child{
 }
 
 .percent-cell{
-  font-size:10px;
+  font-size:20px;
   font-weight:700;
   white-space:nowrap;
   text-align:center;
@@ -197,7 +197,7 @@ td:last-child{
 }
 
 .percent-cell .arrow{
-  font-size:10px;
+  font-size:20px;
   margin-left:4px;
   position:relative;
   top:-1px;
@@ -255,7 +255,7 @@ td:last-child{
 }
 
 .ticker-item strong{
-  font-size:14px;
+  font-size:20px;
   font-weight:700;
   color:#333;
   white-space:nowrap;
@@ -586,11 +586,11 @@ td:last-child{
   }
 
   .percent-cell{
-    font-size:5px;
+    font-size:11px;
   }
 
   .percent-cell .arrow{
-    font-size:5px;
+    font-size:8px;
     margin-left:3px;
   }
 
@@ -755,14 +755,14 @@ td:last-child{
   .arabic-nav #mobileMenu{
     position:absolute!important;
     top:78px!important;
-    right:15px!important;
+    right:12px!important;
 
     display:none;
     flex-direction:column!important;
 
     width:220px!important;
     background:#fff!important;
-    border-radius:22px!important;
+    border-radius:122px!important;
     padding:10px!important;
     z-index:999999!important;
     box-shadow:0 8px 25px rgba(0,0,0,.12)!important;

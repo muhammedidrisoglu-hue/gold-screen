@@ -119,8 +119,18 @@ function formatCustomNumber(value, digits = 3) {
 }
 
 function formatItemNumber(value, item) {
+
+  if(item.name === "USD/KG" || item.name === "EUR/KG"){
+
+    const rounded = Math.ceil(Number(value) * 100) / 100;
+
+    return formatCustomNumber(rounded, 3);
+  }
+
   if (item.zeroDigits) return formatCustomNumber(value, 0);
+
   if (item.twoDigits) return formatCustomNumber(value, 2);
+
   return formatNumber(value);
 }
 
