@@ -653,12 +653,17 @@ if(savedPrices){
 }
 
 const socket = io("https://altinapi.com", {
-      transports: ["websocket"],
+  transports: ["websocket"],
+  reconnection: true,
+  reconnectionAttempts: Infinity,
+  reconnectionDelay: 500,
+  reconnectionDelayMax: 1500,
+  timeout: 10000,
 
-    auth: {
-      api_key: ALTINAPI_KEY
-    }
-  });
+  auth: {
+    api_key: ALTINAPI_KEY
+  }
+});
 
   socket.on("connect", () => {
 
@@ -688,11 +693,13 @@ const socket = io("https://altinapi.com", {
     handleLiveData(data);
   });
 
-  socket.on("connect_error", err => {
-    console.log("SOCKET ERROR", err.message);
-  });
+socket.on("disconnect", () => {
+  console.log("DISCONNECTED");
+});
 
-  socket.on("disconnect", () => {
-    console.log("DISCONNECTED");
-  });
+socket.io.on("reconnect", () => {
+  console.log("RECONNECTED");
+  socket.emit("subscribe", symbols);
+});
+
 });
