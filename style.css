@@ -650,3 +650,41 @@ td:last-child{
     background:#fafafa;
   }
 }
+/* اسم المحل */
+.arabic-nav{
+  position: relative;
+}
+
+.arabic-nav .logo-text{
+  font-size: 70px;
+  font-weight: 800;
+  color: #c9a227;
+  text-align: center;
+  width: 100%;
+  letter-spacing: 1px;
+}
+
+/* غازي عنتاب اسطنبول */
+.arabic-location{
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  font-size: 13px;
+  color: #666;
+  font-weight: 600;
+}
+
+/* موبايل */
+@media(max-width:768px){
+
+  .arabic-nav .logo-text{
+    font-size: 28px;
+  }
+
+  .arabic-location{
+    top: 12px;
+    left: 12px;
+    font-size: 11px;
+  }
+
+}
