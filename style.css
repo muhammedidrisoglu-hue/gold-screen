@@ -622,3 +622,28 @@ td:last-child{
     z-index:999999;
   }
 }
+.flash-up td{
+  animation: flashGreen 5s ease;
+}
+
+.flash-down td{
+  animation: flashRed 5s ease;
+}
+
+@keyframes flashGreen{
+  0%{
+    background:#d7f7df;
+  }
+  100%{
+    background:#fafafa;
+  }
+}
+
+@keyframes flashRed{
+  0%{
+    background:#ffd9d9;
+  }
+  100%{
+    background:#fafafa;
+  }
+}

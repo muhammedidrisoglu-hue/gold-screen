@@ -154,17 +154,19 @@ function createRow(item) {
   let percent = 0;
   let arrow = "▲";
   let trendClass = "up";
+  let flashClass = "";
 
-  if (oldPrices[item.name]) {
-    const oldSell = oldPrices[item.name].sell;
+  const oldSell = oldPrices[item.name]?.sell;
 
-    if (Number.isFinite(oldSell) && oldSell !== 0) {
-      percent = ((sell - oldSell) / oldSell) * 100;
-    }
+  if (Number.isFinite(oldSell) && oldSell !== 0) {
+    percent = ((sell - oldSell) / oldSell) * 100;
 
-    if (sell < oldSell) {
+    if (sell > oldSell) {
+      flashClass = "flash-up";
+    } else if (sell < oldSell) {
       arrow = "▼";
       trendClass = "down";
+      flashClass = "flash-down";
     }
   }
 
@@ -172,7 +174,7 @@ function createRow(item) {
   tickerData[item.name] = sell;
 
   return `
-    <tr>
+    <tr class="${flashClass}">
       <td>
         <span class="price-name">${item.name}</span>
       </td>
@@ -182,25 +184,25 @@ function createRow(item) {
         <span class="arrow">${arrow}</span>
       </td>
 
-     <td>
-  ${
-    item.zeroDigits
-      ? formatCustomNumber(buy,0)
-      : item.twoDigits
-      ? formatCustomNumber(buy,2)
-      : formatNumber(buy)
-  }
-</td>
+      <td>
+        ${
+          item.zeroDigits
+            ? formatCustomNumber(buy,0)
+            : item.twoDigits
+            ? formatCustomNumber(buy,2)
+            : formatNumber(buy)
+        }
+      </td>
 
-<td>
-  ${
-    item.zeroDigits
-      ? formatCustomNumber(sell,0)
-      : item.twoDigits
-      ? formatCustomNumber(sell,2)
-      : formatNumber(sell)
-  }
-</td>
+      <td>
+        ${
+          item.zeroDigits
+            ? formatCustomNumber(sell,0)
+            : item.twoDigits
+            ? formatCustomNumber(sell,2)
+            : formatNumber(sell)
+        }
+      </td>
     </tr>
   `;
 }
@@ -372,12 +374,18 @@ function createArabicRow(item){
   let percent = 0;
 let arrow = "▲";
 let trendClass = "up";
+let flashClass = "";
 
 if(oldPrices[item.name]){
   const oldSell = oldPrices[item.name].sell;
 
   if(Number.isFinite(oldSell) && oldSell !== 0){
     percent = ((sell - oldSell) / oldSell) * 100;
+    if (sell > oldSell) {
+  flashClass = "flash-up";
+} else if (sell < oldSell) {
+  flashClass = "flash-down";
+}
   }
 
   if(sell < oldSell){
@@ -405,7 +413,7 @@ const sellText =
   oldPrices[item.name] = { buy, sell };
 
   return `
-    <tr>
+    <tr class="${flashClass}">
 
       <td>
         <span class="price-name arabic-name">
