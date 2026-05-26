@@ -187,7 +187,7 @@ td:last-child{
 }
 
 .percent-cell{
-  font-size:12px;
+  font-size:10px;
   font-weight:700;
   white-space:nowrap;
   text-align:center;
@@ -429,12 +429,12 @@ td:last-child{
 }
 
 .arabic-table .percent-cell{
-  font-size:10px!important;
+  font-size:5px!important;
   font-weight:600!important;
 }
 
 .arabic-table .percent-cell .arrow{
-  font-size:6px!important;
+  font-size:5px!important;
   margin-left:2px!important;
 }
 
@@ -586,11 +586,11 @@ td:last-child{
   }
 
   .percent-cell{
-    font-size:11px;
+    font-size:5px;
   }
 
   .percent-cell .arrow{
-    font-size:9px;
+    font-size:5px;
     margin-left:3px;
   }
 
@@ -724,12 +724,12 @@ td:last-child{
   }
 
   .percent-cell{
-    font-size:7px!important;
+    font-size:2px!important;
     padding:0!important;
   }
 
   .percent-cell .arrow{
-    font-size:6px!important;
+    font-size:2px!important;
     margin-left:1px!important;
   }
 
