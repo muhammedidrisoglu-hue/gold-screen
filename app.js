@@ -328,7 +328,6 @@ function createArabicRow(item) {
 
       <td class="percent-cell ${trend.trendClass}">
         <span>%${percentText}</span>
-        <span class="arrow">${trend.arrow}</span>
       </td>
 
       <td>${formatItemNumber(buy, item)}</td>
@@ -390,13 +389,14 @@ function renderArabicPrices() {
     makeItem("ذهب عيار 21 <br>بالدولار", ayar21Buy / usdRate, ayar21Sell / usdRate, { twoDigits:true }),
     makeItem("ذهب عيار 21 <br>باليورو", ayar21Buy / eurRate, ayar21Sell / eurRate, { twoDigits:true }),
 
-    tam ? makeItem("الليرة تام <br>بالليرة التركية", tamBuy, tamSell, { zeroDigits:true }) : null,
+    tam ? makeItem("الليرة تام <br>بالليرة التركية", tamBuy - 300 , tamSell - 300,
+       { zeroDigits:true }) : null,
     tam ? makeItem("الليرة تام <br>بالدولار", tamBuy / usdRate, tamSell / usdRate, { zeroDigits:true }) : null,
 
-    yarim ? makeItem("نص ليرة <br>بالليرة التركية", yarimBuy, yarimSell, { zeroDigits:true }) : null,
+    yarim ? makeItem("نص ليرة <br>بالليرة التركية", yarimBuy - 200, yarimSell - 200, { zeroDigits:true }) : null,
     yarim ? makeItem("نص ليرة <br>بالدولار", yarimBuy / usdRate, yarimSell / usdRate, { zeroDigits:true }) : null,
 
-    ceyrek ? makeItem("ربع ليرة <br>بالليرة التركية", ceyrekBuy, ceyrekSell, { zeroDigits:true }) : null,
+    ceyrek ? makeItem("ربع ليرة <br>بالليرة التركية", ceyrekBuy - 100, ceyrekSell - 100, { zeroDigits:true }) : null,
     ceyrek ? makeItem("ربع ليرة <br>بالدولار", ceyrekBuy / usdRate, ceyrekSell / usdRate, { zeroDigits:true }) : null,
 
     makeItem("ذهب عيار 22 <br>بالليرة التركية", ayar22Buy, ayar22Sell, { zeroDigits:true }),
@@ -437,10 +437,10 @@ function renderArabicPrices() {
     ) : null,
 
     makeItem("اونصة 1 غرام", hasBuy / usdRate, (hasSell / usdRate) * 1.02, { zeroDigits:true }),
-    makeItem("اونصة 5 غرام", (hasBuy * 5) / usdRate, ((hasSell * 5) / usdRate) * 1.015, { zeroDigits:true }),
-    makeItem("اونصة 20 غرام", (hasBuy * 20) / usdRate, ((hasSell * 20) / usdRate) * 1.01005, { zeroDigits:true }),
-    makeItem("اونصة 50 غرام", (hasBuy * 50) / usdRate, ((hasSell * 50) / usdRate) * 1.007, { zeroDigits:true }),
-    makeItem("اونصة 100 غرام", (hasBuy * 100) / usdRate, ((hasSell * 100) / usdRate) * 1.005, { zeroDigits:true })
+    makeItem("اونصة 5 غرام", (hasBuy * 5) / usdRate, ((hasSell * 5) / usdRate) * 1.00, { zeroDigits:true }),
+    makeItem("اونصة 20 غرام", (hasBuy * 20) / usdRate, ((hasSell * 20) / usdRate) * 1.0, { zeroDigits:true }),
+    makeItem("اونصة 50 غرام", (hasBuy * 50) / usdRate, ((hasSell * 50) / usdRate) * 1.00, { zeroDigits:true }),
+    makeItem("اونصة 100 غرام", (hasBuy * 100) / usdRate, ((hasSell * 100) / usdRate) * 0.998, { zeroDigits:true })
   ].filter(Boolean);
 
   const gbp = getItem("GBPTRY");
