@@ -498,7 +498,7 @@ td:last-child{
 }
 
 /* Mobile */
-@media screen and (max-width:768px){
+@media screen and (max-width:999px){
   body{
     padding-bottom:0;
   }
@@ -684,41 +684,59 @@ td:last-child{
     padding-left:1px!important;
     padding-right:1px!important;
   }
-}@media screen and (max-width:430px){
+  @media screen and (max-width:300px){
 
-  .arabic-table th:first-child,
-  .arabic-table td:first-child{
-    width:42%!important;
+  table,
+  .arabic-table{
+    table-layout:fixed!important;
+    width:0%!important;
   }
 
-  .arabic-table th:nth-child(2),
-  .arabic-table td:nth-child(2){
-    width:12%!important;
+  th:first-child,
+  td:first-child{
+    width:32%!important;
   }
 
-  .arabic-table th:nth-child(3),
-  .arabic-table td:nth-child(3),
-  .arabic-table th:nth-child(4),
-  .arabic-table td:nth-child(4){
-    width:23%!important;
+  th:nth-child(2),
+  td:nth-child(2){
+    width:10%!important;
   }
 
+  th:nth-child(3),
+  td:nth-child(3),
+  th:nth-child(4),
+  td:nth-child(4){
+    width:29%!important;
+  }
+
+  td{
+    font-size:13px!important;
+    padding:10px 3px!important;
+  }
+
+  .price-name,
   .arabic-name{
-    font-size:13px!important;
+    font-size:12px!important;
+    line-height:1.15!important;
     white-space:normal!important;
-    line-height:1.2!important;
+    overflow:visible!important;
+    text-overflow:unset!important;
   }
 
-  .arabic-table td{
-    font-size:13px!important;
-    padding:12px 4px!important;
-  }
-
-  .arabic-table .percent-cell{
+  .percent-cell{
     font-size:7px!important;
+    padding:0!important;
   }
 
-  .arabic-table .percent-cell .arrow{
+  .percent-cell .arrow{
     font-size:6px!important;
+    margin-left:1px!important;
+  }
+
+  td:nth-child(3),
+  td:nth-child(4){
+    font-size:13px!important;
+    white-space:nowrap!important;
+    text-align:center!important;
   }
 }
