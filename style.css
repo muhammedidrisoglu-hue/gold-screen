@@ -221,14 +221,17 @@ td:last-child{
   border-top:1px solid #ededed;
   box-shadow:0 -4px 16px rgba(0,0,0,.045);
 }
-
 .ticker-track{
   display:flex;
   width:max-content;
-  animation:tickerMove 65s linear infinite;
+  animation:tickerMove 75s linear infinite;
   will-change:transform;
   transform:translateZ(0);
   backface-visibility:hidden;
+}
+
+.ticker-track:hover{
+  animation-play-state: paused;
 }
 
 .ticker-item{
@@ -622,12 +625,12 @@ td:last-child{
     z-index:999999;
   }
 }
-.flash-up td{
-  animation: flashGreen 5s ease;
+.flash-up{
+  color:#0f9d58 !important;
 }
 
-.flash-down td{
-  animation: flashRed 5s ease;
+.flash-down{
+  color:#d93025 !important;
 }
 
 @keyframes flashGreen{

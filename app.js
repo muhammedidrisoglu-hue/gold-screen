@@ -174,7 +174,7 @@ function createRow(item) {
   tickerData[item.name] = sell;
 
   return `
-    <tr class="${flashClass}">
+    <tr>
       <td>
         <span class="price-name">${item.name}</span>
       </td>
@@ -184,7 +184,7 @@ function createRow(item) {
         <span class="arrow">${arrow}</span>
       </td>
 
-      <td>
+      <td class="${flashClass}">
         ${
           item.zeroDigits
             ? formatCustomNumber(buy,0)
@@ -194,7 +194,7 @@ function createRow(item) {
         }
       </td>
 
-      <td>
+      <td class="${flashClass}">
         ${
           item.zeroDigits
             ? formatCustomNumber(sell,0)
@@ -587,19 +587,19 @@ const ayar21Buy = (hasSell * 0.875) - 75;
       hasSell
     ),
 
-    makeItem(
-      "ذهب عيار 24 بالدولار",
-      hasBuy / usdRate,
-      hasSell / usdRate,
-      { twoDigits:true }
-    ),
+makeItem(
+  "ذهب عيار 24 بالدولار",
+  parsePrice(getItem("USD/KG").buy) / 1,
+  parsePrice(getItem("USD/KG").sell) / 1,
+  { twoDigits:true }
+),
 
-    makeItem(
-      "ذهب عيار 24 باليورو",
-      hasBuy / eurRate,
-      hasSell / eurRate,
-      { twoDigits:true }
-    ),
+makeItem(
+  "ذهب عيار 24 باليورو",
+  parsePrice(getItem("EUR/KG").buy) / 1,
+  parsePrice(getItem("EUR/KG").sell) / 1,
+  { twoDigits:true }
+),
 
     silverOns ? makeItem(
       "سعر اونصة الفضة بالدولار",
