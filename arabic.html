@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>تابلو الذهب العربي</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+
+    body{
+      direction:rtl;
+    }
+
+    .arabic-title{
+      text-align:right!important;
+      padding-right:20px!important;
+    }
+
+    .arabic-table td:first-child,
+    .arabic-table th:first-child{
+      text-align:right!important;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="nav-header arabic-nav">
+
+  <a href="/" class="logo-link">
+    <img src="logo.png" class="nav-logo" alt="HAC IDRIS GOLD">
+  </a>
+
+  <div class="nav-links" id="mobileMenu">
+    <a href="/arabic.html" class="active">صفحة الرئيسية</a>
+    <a href="/iletisim.html">للتواصل</a>
+<a href="/" class="language-switch">TR | عربي</a>  </div>
+
+</div>
+
+<div class="sections">
+
+  <div class="price-section">
+
+    <h2 class="arabic-title">أسعار الذهب</h2>
+
+    <table class="arabic-table">
+
+<thead>
+  <tr>
+    <th></th>
+    <th></th>
+    <th>شراء</th>
+    <th>بيع</th>
+  </tr>
+</thead>
+
+      <tbody id="arabicGoldBody"></tbody>
+
+    </table>
+
+  </div>
+
+  <div class="price-section">
+
+    <h2 class="arabic-title">المعادن</h2>
+
+    <table class="arabic-table">
+
+<thead>
+  <tr>
+    <th></th>
+    <th></th>
+    <th>شراء</th>
+    <th>بيع</th>
+  </tr>
+</thead>
+      <tbody id="arabicMetalBody"></tbody>
+
+    </table>
+
+  </div>
+
+  <div class="price-section">
+
+    <h2 class="arabic-title">الصرافة</h2>
+
+    <table class="arabic-table">
+
+<thead>
+  <tr>
+    <th></th>
+    <th></th>
+    <th>شراء</th>
+    <th>بيع</th>
+  </tr>
+</thead>
+      <tbody id="arabicExchangeBody"></tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script src="./app.js?v=20000"></script>
+
+</body>
+<button id="fullscreenBtn" onclick="openFullScreen()">⛶</button>
+</html>

@@ -136,6 +136,17 @@ function formatNumber(value) {
   }).format(n);
 }
 
+function formatCustomNumber(value, digits = 3) {
+  const n = Number(value);
+
+  if (!Number.isFinite(n)) return "";
+
+  return new Intl.NumberFormat("tr-TR", {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits
+  }).format(n);
+}
+
 function createRow(item) {
   const buy = parsePrice(item.buy);
   const sell = parsePrice(item.sell);
@@ -171,8 +182,25 @@ function createRow(item) {
         <span class="arrow">${arrow}</span>
       </td>
 
-      <td>${formatNumber(buy)}</td>
-      <td>${formatNumber(sell)}</td>
+     <td>
+  ${
+    item.zeroDigits
+      ? formatCustomNumber(buy,0)
+      : item.twoDigits
+      ? formatCustomNumber(buy,2)
+      : formatNumber(buy)
+  }
+</td>
+
+<td>
+  ${
+    item.zeroDigits
+      ? formatCustomNumber(sell,0)
+      : item.twoDigits
+      ? formatCustomNumber(sell,2)
+      : formatNumber(sell)
+  }
+</td>
     </tr>
   `;
 }
@@ -211,7 +239,25 @@ function renderPrices() {
   const maden = madenOrder
     .map(name => all.find(i => i.name === name))
     .filter(Boolean);
+maden.forEach(item => {
 
+  if(item.name === "USD/KG"){
+    item.twoDigits = true;
+  }
+
+  if(item.name === "EUR/KG"){
+    item.twoDigits = true;
+  }
+
+  if(item.name === "GÜMÜŞ ONS"){
+    item.twoDigits = true;
+  }
+
+  if(item.name === "ALTIN GÜMÜŞ"){
+    item.twoDigits = true;
+  }
+
+});
   const doviz = dovizOrder
     .map(name => all.find(i => i.name === name))
     .filter(Boolean);
@@ -237,6 +283,7 @@ function renderPrices() {
   }
 
   updateTicker();
+  renderArabicPrices();
 }
 
 function normalizeItem(item) {
@@ -305,7 +352,298 @@ function toggleMenu() {
     menu.classList.toggle("show");
   }
 }
+function getItem(name){
+  return Object.values(latestItems).find(i => i.name === name);
+}
+function makeItem(name,buy,sell,options = {}){
+  return {
+    name,
+    buy,
+    sell,
+    ...options
+  };
+}
 
+function createArabicRow(item){
+
+  const buy = parsePrice(item.buy);
+  const sell = parsePrice(item.sell);
+
+  let percent = 0;
+let arrow = "▲";
+let trendClass = "up";
+
+if(oldPrices[item.name]){
+  const oldSell = oldPrices[item.name].sell;
+
+  if(Number.isFinite(oldSell) && oldSell !== 0){
+    percent = ((sell - oldSell) / oldSell) * 100;
+  }
+
+  if(sell < oldSell){
+    arrow = "▼";
+    trendClass = "down";
+  }
+}
+
+oldPrices[item.name] = { buy, sell };
+
+const buyText =
+  item.zeroDigits
+    ? formatCustomNumber(buy,0)
+    : item.twoDigits
+    ? formatCustomNumber(buy,2)
+    : formatNumber(buy);
+
+const sellText =
+  item.zeroDigits
+    ? formatCustomNumber(sell,0)
+    : item.twoDigits
+    ? formatCustomNumber(sell,2)
+    : formatNumber(sell);
+
+  oldPrices[item.name] = { buy, sell };
+
+  return `
+    <tr>
+
+      <td>
+        <span class="price-name arabic-name">
+          ${item.name}
+        </span>
+      </td>
+
+      <td class="percent-cell ${trendClass}">
+        <span>%${item.name === "EURUSD"
+  ? Math.abs(percent).toFixed(4)
+  : Math.abs(percent).toFixed(3)}</span>
+        <span class="arrow">${arrow}</span>
+      </td>
+
+      <td>${buyText}</td>
+
+      <td>${sellText}</td>
+
+    </tr>
+  `;
+}
+
+function renderArabicPrices(){
+
+  const goldBody = document.getElementById("arabicGoldBody");
+  const metalBody = document.getElementById("arabicMetalBody");
+  const exchangeBody = document.getElementById("arabicExchangeBody");
+
+  if(!goldBody || !metalBody || !exchangeBody) return;
+
+  const has = getItem("HAS ALTIN");
+  const usd = getItem("USDTRY");
+  const eur = getItem("EURTRY");
+
+  const ons = getItem("ALTIN ONS");
+  const silverOns = getItem("GÜMÜŞ ONS");
+  const silverUsd = getItem("GÜMÜŞ USD");
+
+  const tam = getItem("YENİ TAM");
+  const yarim = getItem("YENİ YARIM");
+  const ceyrek = getItem("YENİ ÇEYREK");
+
+  if(!has || !usd || !eur) return;
+
+  const usdRate = parsePrice(usd.sell);
+  const eurRate = parsePrice(eur.sell);
+
+  const hasBuy = parsePrice(has.buy);
+  const hasSell = parsePrice(has.sell);
+
+const ayar21Buy = (hasSell * 0.875) - 75;
+  const ayar21Sell = hasSell * 0.875;
+
+  const ayar22Buy = hasBuy * 0.916;
+  const ayar22Sell = hasSell * 0.916;
+
+  const ayar18Buy = hasBuy * 0.750;
+  const ayar18Sell = hasSell * 0.750;
+
+  const ayar14Buy = hasBuy * 0.585;
+  const ayar14Sell = hasSell * 0.585;
+
+  const tamSell = tam ? parsePrice(tam.sell) : null;
+  const tamBuy = tam ? tamSell - 1000 : null;
+
+  const yarimSell = yarim ? parsePrice(yarim.sell) : null;
+  const yarimBuy = yarim ? yarimSell - 600 : null;
+
+  const ceyrekSell = ceyrek ? parsePrice(ceyrek.sell) : null;
+  const ceyrekBuy = ceyrek ? ceyrekSell - 300 : null;
+
+  const goldItems = [
+
+    makeItem(
+      "ذهب عيار 21 بالليرة التركية",
+      ayar21Buy,
+      ayar21Sell,
+      { zeroDigits:true }
+    ),
+
+    makeItem(
+      "ذهب عيار 21 بالدولار",
+      ayar21Buy / usdRate,
+      ayar21Sell / usdRate,
+      { twoDigits:true }
+    ),
+
+    makeItem(
+      "ذهب عيار 21 باليورو",
+      ayar21Buy / eurRate,
+      ayar21Sell / eurRate,
+      { twoDigits:true }
+    ),
+
+    tam ? makeItem(
+      "الليرة تام بالليرة التركية",
+      tamBuy,
+      tamSell,
+      { zeroDigits:true }
+    ) : null,
+
+    tam ? makeItem(
+      "الليرة تام بالدولار",
+      tamBuy / usdRate,
+      tamSell / usdRate,
+      { zeroDigits:true }
+    ) : null,
+
+    yarim ? makeItem(
+      "نص ليرة بالليرة التركية",
+      yarimBuy,
+      yarimSell,
+      { zeroDigits:true }
+    ) : null,
+
+    yarim ? makeItem(
+      "نص ليرة بالدولار",
+      yarimBuy / usdRate,
+      yarimSell / usdRate,
+      { zeroDigits:true }
+    ) : null,
+
+    ceyrek ? makeItem(
+      "ربع ليرة بالليرة التركية",
+      ceyrekBuy,
+      ceyrekSell,
+      { zeroDigits:true }
+    ) : null,
+
+    ceyrek ? makeItem(
+      "ربع ليرة بالدولار",
+      ceyrekBuy / usdRate,
+      ceyrekSell / usdRate,
+      { zeroDigits:true }
+    ) : null,
+
+    makeItem(
+      "ذهب عيار 22 بالليرة التركية",
+      ayar22Buy,
+      ayar22Sell,
+      { zeroDigits:true }
+    ),
+
+    makeItem(
+      "ذهب عيار 18 بالليرة التركية",
+      ayar18Buy,
+      ayar18Sell,
+      { zeroDigits:true }
+    ),
+
+    makeItem(
+      "ذهب عيار 14 بالليرة التركية",
+      ayar14Buy,
+      ayar14Sell,
+      { zeroDigits:true }
+    )
+
+  ].filter(Boolean);
+
+  const metalItems = [
+
+    ons ? makeItem(
+      "سعر الاونصة بالدولار",
+      parsePrice(ons.buy),
+      parsePrice(ons.sell)
+    ) : null,
+
+    makeItem(
+      "ذهب عيار 24 بالليرة التركية",
+      hasBuy,
+      hasSell
+    ),
+
+    makeItem(
+      "ذهب عيار 24 بالدولار",
+      hasBuy / usdRate,
+      hasSell / usdRate,
+      { twoDigits:true }
+    ),
+
+    makeItem(
+      "ذهب عيار 24 باليورو",
+      hasBuy / eurRate,
+      hasSell / eurRate,
+      { twoDigits:true }
+    ),
+
+    silverOns ? makeItem(
+      "سعر اونصة الفضة بالدولار",
+      parsePrice(silverOns.buy),
+      parsePrice(silverOns.sell),
+      { twoDigits:true }
+    ) : null,
+
+    silverUsd ? makeItem(
+      "الفضة بالدولار",
+      parsePrice(silverUsd.buy),
+      parsePrice(silverUsd.sell)
+    ) : null,
+
+    makeItem("اونصة 1 غرام", hasBuy / usdRate, (hasSell / usdRate) * 1.02, { zeroDigits:true }),
+    makeItem("اونصة 5 غرام", (hasBuy * 5) / usdRate, ((hasSell * 5) / usdRate) * 1.015, { zeroDigits:true }),
+    makeItem("اونصة 20 غرام", (hasBuy * 20) / usdRate, ((hasSell * 20) / usdRate) * 1.01005, { zeroDigits:true }),
+    makeItem("اونصة 50 غرام", (hasBuy * 50) / usdRate, ((hasSell * 50) / usdRate) * 1.007, { zeroDigits:true }),
+    makeItem("اونصة 100 غرام", (hasBuy * 100) / usdRate, ((hasSell * 100) / usdRate) * 1.005, { zeroDigits:true })
+
+  ].filter(Boolean);
+
+  const gbp = getItem("GBPTRY");
+  const chf = getItem("CHFTRY");
+  const sar = getItem("SARTRY");
+  const aed = getItem("AEDTRY");
+  const eurusd = getItem("EURUSD");
+
+  const exchangeItems = [
+
+    makeItem("الليرة التركية مقابل الدولار", parsePrice(usd.buy), parsePrice(usd.sell)),
+    makeItem("الليرة التركية مقابل اليورو", parsePrice(eur.buy), parsePrice(eur.sell)),
+
+    eurusd ? makeItem("اليورو مقابل الدولار", parsePrice(eurusd.buy), parsePrice(eurusd.sell)) : null,
+    gbp ? makeItem("الاسترليني مقابل الليرة التركية", parsePrice(gbp.buy), parsePrice(gbp.sell)) : null,
+    chf ? makeItem("الفرنك السويسري مقابل الليرة التركية", parsePrice(chf.buy), parsePrice(chf.sell)) : null,
+    sar ? makeItem("الريال السعودي مقابل الليرة التركية", parsePrice(sar.buy), parsePrice(sar.sell)) : null,
+    aed ? makeItem("الدرهم الاماراتي مقابل الليرة التركية", parsePrice(aed.buy), parsePrice(aed.sell)) : null
+
+  ].filter(Boolean);
+
+  goldBody.innerHTML = goldItems.map(createArabicRow).join("");
+  metalBody.innerHTML = metalItems.map(createArabicRow).join("");
+  exchangeBody.innerHTML = exchangeItems.map(createArabicRow).join("");
+}
+function openFullScreen() {
+  const elem = document.documentElement;
+
+  if (elem.requestFullscreen) elem.requestFullscreen();
+  else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
+  else if (elem.msRequestFullscreen) elem.msRequestFullscreen();
+}
 document.addEventListener("DOMContentLoaded", () => {
 
 const socket = io("https://altinapi.com", {

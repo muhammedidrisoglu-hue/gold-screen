@@ -39,6 +39,17 @@ body{
   display:flex;
   gap:14px;
   align-items:center;
+.language-switch{
+  background:none!important;
+  padding:0!important;
+  color:#000000!important;
+  font-weight:700!important;
+  font-size:18px!important;
+}
+
+.language-switch:hover{
+  opacity:.8;
+}
 }
 
 .nav-links a{
@@ -418,4 +429,125 @@ td:last-child{
     display:none;
     overflow:hidden;
   }
+}
+
+.arabic-nav{
+  direction:ltr;
+}
+
+.arabic-nav .logo-link{
+  margin-left:50px;
+  margin-right:0;
+}
+
+.arabic-nav .nav-links{
+  margin-left:auto;
+  margin-right:0;
+}
+
+.arabic-table{
+  direction:rtl;
+}
+
+.arabic-table th:first-child,
+.arabic-table td:first-child{
+  width:40%;
+  text-align:right!important;
+}
+
+.arabic-table th:nth-child(2),
+.arabic-table td:nth-child(2){
+  width:14%;
+  text-align:center!important;
+}
+
+.arabic-table th:nth-child(3),
+.arabic-table td:nth-child(3),
+.arabic-table th:nth-child(4),
+.arabic-table td:nth-child(4){
+  width:23%;
+  text-align:center!important;
+}
+
+.arabic-title{
+  text-align:right!important;
+  padding-right:25px!important;
+  padding-left:0!important;
+}
+
+.arabic-name{
+  font-family:Arial, sans-serif;
+  font-weight:800;
+  font-size:20px;
+}
+.arabic-table{
+  direction:rtl;
+  table-layout:fixed;
+  border-collapse:separate;
+  border-spacing:0 10px;
+}
+
+.arabic-table th:first-child,
+.arabic-table td:first-child{
+  width:40%;
+  text-align:right!important;
+}
+
+.arabic-table th:nth-child(2),
+.arabic-table td:nth-child(2){
+  width:14%;
+  text-align:center!important;
+}
+
+.arabic-table th:nth-child(3),
+.arabic-table td:nth-child(3),
+.arabic-table th:nth-child(4),
+.arabic-table td:nth-child(4){
+  width:23%;
+  text-align:center!important;
+}
+
+.arabic-table td{
+  background:#fafafa;
+  padding:18px 12px;
+  font-size:21px;
+  font-weight:600;
+  vertical-align:middle;
+  border-top:1px solid #f0f0f0;
+  border-bottom:1px solid #f0f0f0;
+}
+
+.arabic-table td:first-child{
+  border-right:1px solid #f0f0f0;
+  border-left:none;
+  border-radius:0 12px 12px 0;
+}
+
+.arabic-table td:last-child{
+  border-left:1px solid #f0f0f0;
+  border-right:none;
+  border-radius:12px 0 0 12px;
+}
+
+.arabic-title{
+  text-align:right!important;
+  padding-right:25px!important;
+  padding-left:0!important;
+}
+
+.arabic-name{
+  font-weight:800;
+  font-size:20px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.arabic-table .percent-cell{
+  font-size:10px!important;
+  font-weight:600!important;
+}
+
+.arabic-table .percent-cell .arrow{
+  font-size:6px!important;
+  margin-left:2px!important;
 }
