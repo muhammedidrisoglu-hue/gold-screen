@@ -184,7 +184,7 @@ function createRow(item) {
         <span class="arrow">${arrow}</span>
       </td>
 
-      <td class="${flashClass}">
+<td class="price-update ${flashClass}">
         ${
           item.zeroDigits
             ? formatCustomNumber(buy,0)

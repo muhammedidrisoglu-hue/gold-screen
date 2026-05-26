@@ -572,7 +572,7 @@ td:last-child{
     width: 100%;
     text-align: center;
     margin-top: 10px;
-    font-size: 40px;
+    font-size: 70px;
   }
 
   .header,
@@ -687,4 +687,32 @@ td:last-child{
     font-size: 11px;
   }
 
+}
+.price-update{
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    transform 0.25s ease;
+
+  will-change: transform;
+}
+
+.flash-up td:last-child,
+.flash-up td:nth-child(3){
+  color:#18a558;
+  transform:scale(1.04);
+}
+
+.flash-down td:last-child,
+.flash-down td:nth-child(3){
+  color:#d62828;
+  transform:scale(1.04);
+}
+.arabic-nav{
+  position: sticky;
+  top: 0;
+  z-index: 99999;
+  background: #fff;
+  padding: 14px 18px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
 }
