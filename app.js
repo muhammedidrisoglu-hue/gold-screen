@@ -386,52 +386,52 @@ function renderArabicPrices() {
   const ceyrekBuy = ceyrek ? ceyrekSell - 300 : null;
 
   const goldItems = [
-    makeItem("ذهب عيار 21 بالليرة التركية", ayar21Buy, ayar21Sell, { zeroDigits:true }),
-    makeItem("ذهب عيار 21 بالدولار", ayar21Buy / usdRate, ayar21Sell / usdRate, { twoDigits:true }),
-    makeItem("ذهب عيار 21 باليورو", ayar21Buy / eurRate, ayar21Sell / eurRate, { twoDigits:true }),
+    makeItem("ذهب عيار 21<br>بالليرة التركية", ayar21Buy, ayar21Sell, { zeroDigits:true }),
+    makeItem("ذهب عيار 21 <br>بالدولار", ayar21Buy / usdRate, ayar21Sell / usdRate, { twoDigits:true }),
+    makeItem("ذهب عيار 21 <br>باليورو", ayar21Buy / eurRate, ayar21Sell / eurRate, { twoDigits:true }),
 
-    tam ? makeItem("الليرة تام بالليرة التركية", tamBuy, tamSell, { zeroDigits:true }) : null,
-    tam ? makeItem("الليرة تام بالدولار", tamBuy / usdRate, tamSell / usdRate, { zeroDigits:true }) : null,
+    tam ? makeItem("الليرة تام <br>بالليرة التركية", tamBuy, tamSell, { zeroDigits:true }) : null,
+    tam ? makeItem("الليرة تام <br>بالدولار", tamBuy / usdRate, tamSell / usdRate, { zeroDigits:true }) : null,
 
-    yarim ? makeItem("نص ليرة بالليرة التركية", yarimBuy, yarimSell, { zeroDigits:true }) : null,
-    yarim ? makeItem("نص ليرة بالدولار", yarimBuy / usdRate, yarimSell / usdRate, { zeroDigits:true }) : null,
+    yarim ? makeItem("نص ليرة <br>بالليرة التركية", yarimBuy, yarimSell, { zeroDigits:true }) : null,
+    yarim ? makeItem("نص ليرة <br>بالدولار", yarimBuy / usdRate, yarimSell / usdRate, { zeroDigits:true }) : null,
 
-    ceyrek ? makeItem("ربع ليرة بالليرة التركية", ceyrekBuy, ceyrekSell, { zeroDigits:true }) : null,
-    ceyrek ? makeItem("ربع ليرة بالدولار", ceyrekBuy / usdRate, ceyrekSell / usdRate, { zeroDigits:true }) : null,
+    ceyrek ? makeItem("ربع ليرة <br>بالليرة التركية", ceyrekBuy, ceyrekSell, { zeroDigits:true }) : null,
+    ceyrek ? makeItem("ربع ليرة <br>بالدولار", ceyrekBuy / usdRate, ceyrekSell / usdRate, { zeroDigits:true }) : null,
 
-    makeItem("ذهب عيار 22 بالليرة التركية", ayar22Buy, ayar22Sell, { zeroDigits:true }),
-    makeItem("ذهب عيار 18 بالليرة التركية", ayar18Buy, ayar18Sell, { zeroDigits:true }),
-    makeItem("ذهب عيار 14 بالليرة التركية", ayar14Buy, ayar14Sell, { zeroDigits:true })
+    makeItem("ذهب عيار 22 <br>بالليرة التركية", ayar22Buy, ayar22Sell, { zeroDigits:true }),
+    makeItem("ذهب عيار 18 <br>بالليرة التركية", ayar18Buy, ayar18Sell, { zeroDigits:true }),
+    makeItem("ذهب عيار 14 <br>بالليرة التركية", ayar14Buy, ayar14Sell, { zeroDigits:true })
   ].filter(Boolean);
 
   const metalItems = [
-    ons ? makeItem("سعر الاونصة بالدولار", parsePrice(ons.buy), parsePrice(ons.sell)) : null,
+    ons ? makeItem("سعر الاونصة <br>بالدولار", parsePrice(ons.buy), parsePrice(ons.sell)) : null,
 
-    makeItem("ذهب عيار 24 بالليرة التركية", hasBuy, hasSell),
+    makeItem("ذهب عيار 24 <br>بالليرة التركية", hasBuy, hasSell),
 
     getItem("USD/KG") ? makeItem(
-      "ذهب عيار 24 بالدولار",
+      "ذهب عيار 24 <br>بالدولار",
       parsePrice(getItem("USD/KG").buy),
       parsePrice(getItem("USD/KG").sell),
       { twoDigits:true }
     ) : null,
 
     getItem("EUR/KG") ? makeItem(
-      "ذهب عيار 24 باليورو",
+      "ذهب عيار 24 <br>باليورو",
       parsePrice(getItem("EUR/KG").buy),
       parsePrice(getItem("EUR/KG").sell),
       { twoDigits:true }
     ) : null,
 
     silverOns ? makeItem(
-      "سعر اونصة الفضة بالدولار",
+      "سعر اونصة الفضة <br>بالدولار",
       parsePrice(silverOns.buy),
       parsePrice(silverOns.sell),
       { twoDigits:true }
     ) : null,
 
     silverUsd ? makeItem(
-      "الفضة بالدولار",
+      "الفضة <br>بالدولار",
       parsePrice(silverUsd.buy),
       parsePrice(silverUsd.sell)
     ) : null,
@@ -450,14 +450,14 @@ function renderArabicPrices() {
   const eurusd = getItem("EURUSD");
 
   const exchangeItems = [
-    makeItem("الليرة التركية مقابل الدولار", parsePrice(usd.buy), parsePrice(usd.sell)),
-    makeItem("الليرة التركية مقابل اليورو", parsePrice(eur.buy), parsePrice(eur.sell)),
+    makeItem("الليرة التركية <br>مقابل الدولار", parsePrice(usd.buy), parsePrice(usd.sell)),
+    makeItem("الليرة التركية <br>مقابل اليورو", parsePrice(eur.buy), parsePrice(eur.sell)),
 
-    eurusd ? makeItem("اليورو مقابل الدولار", parsePrice(eurusd.buy), parsePrice(eurusd.sell)) : null,
-    gbp ? makeItem("الاسترليني مقابل الليرة التركية", parsePrice(gbp.buy), parsePrice(gbp.sell)) : null,
-    chf ? makeItem("الفرنك السويسري مقابل الليرة التركية", parsePrice(chf.buy), parsePrice(chf.sell)) : null,
-    sar ? makeItem("الريال السعودي مقابل الليرة التركية", parsePrice(sar.buy), parsePrice(sar.sell)) : null,
-    aed ? makeItem("الدرهم الاماراتي مقابل الليرة التركية", parsePrice(aed.buy), parsePrice(aed.sell)) : null
+    eurusd ? makeItem("اليورو <br>مقابل الدولار", parsePrice(eurusd.buy), parsePrice(eurusd.sell)) : null,
+    gbp ? makeItem("الاسترليني <br>مقابل الليرة التركية", parsePrice(gbp.buy), parsePrice(gbp.sell)) : null,
+    chf ? makeItem("الفرنك السويسري <br>مقابل الليرة التركية", parsePrice(chf.buy), parsePrice(chf.sell)) : null,
+    sar ? makeItem("الريال السعودي <br>مقابل الليرة التركية", parsePrice(sar.buy), parsePrice(sar.sell)) : null,
+    aed ? makeItem("الدرهم الاماراتي <br>مقابل الليرة التركية", parsePrice(aed.buy), parsePrice(aed.sell)) : null
   ].filter(Boolean);
 
   goldBody.innerHTML = goldItems.map(createArabicRow).join("");
