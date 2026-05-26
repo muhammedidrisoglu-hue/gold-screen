@@ -341,7 +341,7 @@ function handleLiveData(data) {
 
     latestItems[item.symbol] = item;
   });
-
+localStorage.setItem("hac_last_prices", JSON.stringify(latestItems));
   renderPrices();
 }
 
@@ -645,6 +645,12 @@ function openFullScreen() {
   else if (elem.msRequestFullscreen) elem.msRequestFullscreen();
 }
 document.addEventListener("DOMContentLoaded", () => {
+  const savedPrices = localStorage.getItem("hac_last_prices");
+
+if(savedPrices){
+  latestItems = JSON.parse(savedPrices);
+  renderPrices();
+}
 
 const socket = io("https://altinapi.com", {
       transports: ["websocket"],
