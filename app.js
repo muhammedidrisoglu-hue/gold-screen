@@ -543,5 +543,5 @@ window.addEventListener("load", () => {
     if (splash) {
       splash.remove();
     }
-  }, 500);
+  }, 1500);
 });
