@@ -542,3 +542,8 @@ window.addEventListener("load", () => {
     document.getElementById("splash")?.classList.add("hide");
   }, 500);
 });
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    document.getElementById("splash")?.classList.add("hide");
+  }, 1000);
+});
