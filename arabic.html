@@ -127,6 +127,16 @@ if("serviceWorker" in navigator){
   navigator.serviceWorker.register("./service-worker.js");
 }
 </script>
+<div id="updateBox">
+  يوجد تحديث جديد
+  <button onclick="location.reload()">تحديث الآن</button>
+</div>
+
+<div id="offlineBox">
+  HAC IDRIS GOLD<br>
+  لا يوجد اتصال بالإنترنت
+</div>
+
 </body>
 <button id="fullscreenBtn" onclick="openFullScreen()">⛶</button>
 </html>

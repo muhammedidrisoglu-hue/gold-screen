@@ -545,3 +545,19 @@ window.addEventListener("load", () => {
     }
   }, 1500);
 });
+window.addEventListener("offline", () => {
+  const offlineBox = document.getElementById("offlineBox");
+  if (offlineBox) offlineBox.style.display = "flex";
+});
+
+window.addEventListener("online", () => {
+  const offlineBox = document.getElementById("offlineBox");
+  if (offlineBox) offlineBox.style.display = "none";
+});
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    const updateBox = document.getElementById("updateBox");
+    if (updateBox) updateBox.style.display = "block";
+  });
+}

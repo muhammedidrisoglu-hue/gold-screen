@@ -824,3 +824,43 @@ td:last-child{
   transition:0.5s;
   pointer-events:none;
 }
+#updateBox{
+  display:none;
+  position:fixed;
+  left:50%;
+  bottom:20px;
+  transform:translateX(-50%);
+  background:#fff;
+  color:#111;
+  padding:14px 18px;
+  border-radius:16px;
+  box-shadow:0 6px 25px rgba(0,0,0,.18);
+  z-index:9999999;
+  font-weight:700;
+  text-align:center;
+}
+
+#updateBox button{
+  margin-left:10px;
+  border:none;
+  background:#c9a227;
+  color:#fff;
+  padding:8px 14px;
+  border-radius:999px;
+  font-weight:700;
+}
+
+#offlineBox{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#fff;
+  color:#c9a227;
+  z-index:99999999;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  font-size:24px;
+  font-weight:800;
+  line-height:1.6;
+}
