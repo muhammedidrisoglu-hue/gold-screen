@@ -819,6 +819,7 @@ td:last-child{
 }
 
 #splash.hide{
+  display: none !important;
   opacity:0;
   transition:0.5s;
   pointer-events:none;
