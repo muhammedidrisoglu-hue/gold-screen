@@ -537,3 +537,8 @@ document.addEventListener("DOMContentLoaded", () => {
     socket.emit("subscribe", symbols);
   });
 });
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    document.getElementById("splash")?.classList.add("hide");
+  }, 500);
+});
