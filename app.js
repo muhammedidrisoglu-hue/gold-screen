@@ -539,14 +539,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 window.addEventListener("load", () => {
   setTimeout(() => {
-    document.getElementById("splash")?.classList.add("hide");
-  }, 500);
-});
-window.addEventListener("load", () => {
-  setTimeout(() => {
     const splash = document.getElementById("splash");
     if (splash) {
       splash.remove();
     }
-  }, 1000);
+  }, 500);
 });
