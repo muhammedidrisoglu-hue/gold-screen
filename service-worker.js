@@ -1,4 +1,4 @@
-const CACHE_NAME = "hac-idris-v1";
+const CACHE_NAME = "hac-idris-v2";
 
 const urlsToCache = [
   "/",
