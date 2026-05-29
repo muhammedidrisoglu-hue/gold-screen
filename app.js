@@ -228,11 +228,15 @@ function renderPrices() {
     "ALTIN GÜMÜŞ"
   ];
 
-  maden.forEach(item => {
-    if (twoDigitItems.includes(item.name)) {
-      item.twoDigits = true;
+maden.forEach(item => {
+  if (twoDigitItems.includes(item.name)) {
+    item.twoDigits = true;
+
+    if (item.name === "USD/KG") {
+      item.sell = parsePrice(item.sell) - 0.100;
     }
-  });
+  }
+});
 
   const doviz = dovizOrder
     .map(name => all.find(i => i.name === name))
