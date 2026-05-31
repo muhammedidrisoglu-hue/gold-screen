@@ -561,3 +561,9 @@ if ("serviceWorker" in navigator) {
     if (updateBox) updateBox.style.display = "block";
   });
 }
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    const splash = document.getElementById("splash");
+    if (splash) splash.classList.add("hide");
+  }, 1500);
+});
